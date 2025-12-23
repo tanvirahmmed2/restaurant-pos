@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Confirm = () => {
+const PosNavbar = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const Confirm = () => {
   )
 }
 
-export default Confirm
+export default PosNavbar

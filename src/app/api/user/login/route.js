@@ -27,6 +27,14 @@ export async function POST(req) {
             }, { status: 400 })
         }
 
+        if (user.isBanned) {
+            return NextResponse.json({
+                success: false,
+                message: 'User is banned'
+            }, { status: 400 })
+        }
+
+
         const isMatchPassword = await bcrypt.compare(user.password, password)
 
         if (!isMatchPassword) {

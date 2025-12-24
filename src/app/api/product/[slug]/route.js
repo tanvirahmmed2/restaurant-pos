@@ -2,16 +2,14 @@ import ConnectDB from "@/lib/database/mongo";
 import { NextResponse } from "next/server";
 
 
-export async function POST(req) {
+export async function GET() {
     try {
         await ConnectDB()
-
-        const {name, email, password}= await req.json()
         
     } catch (error) {
         return NextResponse.json({
             success: false,
-            message: 'Failed to create user',
+            message: 'Failed to fetch data',
             error: error.message
         }, { status: 500 })
     }

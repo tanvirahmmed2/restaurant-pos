@@ -10,13 +10,13 @@ const categories = [
   },
   {
     id: 2,
-    category: 'Snacks',
-    value: 'snacks'
+    category: 'Combo',
+    value: 'combo'
   },
   {
     id: 3,
-    category: 'Pasta',
-    value: 'pasta'
+    category: 'Snacks',
+    value: 'snacks'
   },
   {
     id: 4,

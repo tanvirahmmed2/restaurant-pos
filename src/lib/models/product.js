@@ -37,7 +37,7 @@ const productSchema = new mongoose.Schema({
         trim: true,
         required: true,
         enum: {
-            values: ['meals', 'snacks', 'drinks', 'pasta', 'salad', 'dessert'],
+            values: ['meals', 'snacks', 'drinks', 'combo', 'salad', 'dessert'],
             message: '{VALUE} is not supported'
         }
     },

@@ -57,7 +57,7 @@ const Menu = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8 w-full">
           {filteredData.length > 0 ? (
             filteredData.map((item) => (
               <div key={item._id} className="p-1 border rounded shadow-sm w-full flex flex-col items-center justify-center">

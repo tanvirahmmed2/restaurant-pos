@@ -83,7 +83,7 @@ export async function POST(req) {
             stream.end(imageBuffer);
         });
 
-        const newProduct = new Product({ title, slug, description, price, image: cloudImage.secure_url, imageId: cloudImage.public_id , category})
+        const newProduct = new Product({ title, slug, description, price, image: cloudImage.secure_url, imageId: cloudImage.public_id, category })
 
         await newProduct.save()
         return NextResponse.json({
@@ -97,6 +97,46 @@ export async function POST(req) {
         return NextResponse.json({
             success: false,
             message: 'Failed to add product',
+            error: error.message
+        }, { status: 500 })
+
+    }
+
+}
+
+export async function DELETE(req) {
+    try {
+        await ConnectDB()
+
+        const { id } = await req.json()
+        if (!id) {
+            return NextResponse.json({
+                success: false,
+                message: 'Id not found'
+            }, { status: 400 })
+        }
+
+        const product = await Product.findById(id)
+        if (!product) {
+            return NextResponse.json({
+                success: false,
+                message: 'Product not found'
+            }, { status: 400 })
+        }
+
+        await cloudinary.uploader.destroy(product.image_id)
+
+        await Product.findByIdAndDelete(id)
+
+        return NextResponse.json({
+            success: true,
+            message: 'Successfully deleted product'
+        }, { status: 200 })
+
+    } catch (error) {
+        return NextResponse.json({
+            success: false,
+            message: 'Failed to delete product',
             error: error.message
         }, { status: 500 })
 

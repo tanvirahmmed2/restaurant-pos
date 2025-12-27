@@ -85,15 +85,24 @@ export async function POST(req) {
 export async function DELETE(req) {
     try {
         await ConnectDB();
-
-        const { userId, productId } = await req.json();
-
-        if (!userId || !productId) {
+        const token = (await cookies()).get('user_token')?.value
+        if (!token) {
             return NextResponse.json({
                 success: false,
-                message: 'User ID and Product ID are required'
+                message: 'Please login first'
+            }, { status: 400 })
+        }
+        const decoded =  jwt.verify(token, JWT_SECRET)
+
+        const {  productId } = await req.json();
+
+        if (!productId) {
+            return NextResponse.json({
+                success: false,
+                message: ' Product ID  required'
             }, { status: 400 });
         }
+        const userId= decoded.id
 
         const updatedUser = await User.findByIdAndUpdate(
             userId,

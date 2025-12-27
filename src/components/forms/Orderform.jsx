@@ -5,21 +5,12 @@ import RemoveFromCart from '../buttons/RemoveFromCart'
 
 const Orderform = ({ cartItems }) => {
 
-
-    useEffect(() => {
-        const fetchUser = async () => {
-
-
-        }
-        fetchUser()
-    }, [])
-
     const [data, setData] = useState({
         name: '',
         phone: '',
         delivery: 'dinein',
         table: '',
-        items: cartItems || null,
+        items: cartItems || [],
         subTotal: '',
         discount: '',
         tax: '',
@@ -27,7 +18,13 @@ const Orderform = ({ cartItems }) => {
         payment: ''
     })
 
-
+    
+    useEffect(() => {
+        setData(prev => ({
+            ...prev,
+            items: cartItems || []
+        }))
+    }, [cartItems])
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -36,6 +33,13 @@ const Orderform = ({ cartItems }) => {
 
     const handleMethodChange = (method) => {
         setData((prev) => ({ ...prev, delivery: method }))
+    }
+
+    const handleRemoveItem = (removedProductId) => {
+        setData(prev => ({
+            ...prev,
+            items: prev.items.filter(item => item.productId !== removedProductId)
+        }))
     }
 
     const handleSubmit = async (e) => {
@@ -47,8 +51,13 @@ const Orderform = ({ cartItems }) => {
         <form onSubmit={handleSubmit} className='w-full flex flex-col items-center justify-between gap-6 text-sm'>
             <div className='w-full flex flex-col items-center justify-center gap-2'>
                 <div className="flex flex-row items-center justify-between w-full">
-                    <p onClick={() => handleMethodChange('dinein')} className={`cursor-pointer px-4 py-1 rounded-full border ${data.delivery === 'dinein' ? 'bg-black text-white' : 'border-gray-300'}`} > Dine In </p>
-                    <p onClick={() => handleMethodChange('takeout')} className={`cursor-pointer px-4 py-1 rounded-full border ${data.delivery === 'takeout' ? 'bg-black text-white' : 'border-gray-300'}`}
+                    <p
+                        onClick={() => handleMethodChange('dinein')}
+                        className={`cursor-pointer px-4 py-1 rounded-full border ${data.delivery === 'dinein' ? 'bg-black text-white' : 'border-gray-300'}`}
+                    > Dine In </p>
+                    <p
+                        onClick={() => handleMethodChange('takeout')}
+                        className={`cursor-pointer px-4 py-1 rounded-full border ${data.delivery === 'takeout' ? 'bg-black text-white' : 'border-gray-300'}`}
                     > Take Out </p>
                 </div>
                 <div className='w-full flex flex-row items-center justify-between'>
@@ -60,8 +69,7 @@ const Orderform = ({ cartItems }) => {
                     <input type="number" id='phone' name='phone' value={data.phone} onChange={handleChange} min={1} className='px-3 border-2 border-black/10 rounded-lg outline-none' />
                 </div>
 
-                {
-                    data.delivery === 'dinein' &&
+                {data.delivery === 'dinein' &&
                     <div className='w-full flex flex-row items-center justify-between'>
                         <label htmlFor="table">Table</label>
                         <input type="number" id='table' name='table' value={data.table} min={1} onChange={handleChange} className='px-3 border-2 border-black/10 rounded-lg outline-none' />
@@ -69,21 +77,21 @@ const Orderform = ({ cartItems }) => {
                 }
             </div>
 
-            {
-                data.items && data.items.map((item) => (
-                    <div key={item._id} className='w-full grid-cols-2 grid border border-black/10 p-1 rounded-lg gap-2'>
-                        <p className='text-sm'>{item.title}</p>
-                        <div className='w-full flex flex-row items-center justify-between'>
-                            <p>{item.quantity}</p>
-                            <p>{item.price}</p>
-                            <RemoveFromCart />
-                        </div>
+            {data.items && data.items.length > 0 && data.items.map((item) => (
+                <div key={item.productId} className='w-full grid-cols-2 grid border border-black/10 p-1 rounded-lg gap-2'>
+                    <p className='text-xs'>{item.title}</p>
+                    <div className='w-full flex flex-row items-center justify-between'>
+                        <p>{item.quantity}</p>
+                        <p>{item.price}</p>
+                        <RemoveFromCart
+                            productId={item.productId}
+                            onRemove={() => handleRemoveItem(item.productId)} // ✅ update UI
+                        />
                     </div>
-                ))
-            }
+                </div>
+            ))}
 
-
-
+            {/* Summary */}
             <div className='w-full flex flex-col gap-6 items-center justify-center'>
                 <div className='w-full flex flex-col gap-2 border-b-2 border-black/10 items-center justify-center'>
                     <div className='w-full flex flex-row items-center justify-between'>
@@ -98,7 +106,6 @@ const Orderform = ({ cartItems }) => {
                         <p>Tax</p>
                         <p>123</p>
                     </div>
-
                 </div>
                 <div className='w-full flex flex-row items-center justify-between'>
                     <p>Total</p>
@@ -107,7 +114,6 @@ const Orderform = ({ cartItems }) => {
             </div>
 
             <button className='bg-black text-white p-1 px-4 rounded-2xl' type='submit'>Place order</button>
-
         </form>
     )
 }

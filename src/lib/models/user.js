@@ -36,9 +36,10 @@ const userSchema = new mongoose.Schema({
     },
     cart: [
         {
-            title: { type: String, trim: true },
-            productId: { type: String, trim: true },
-            quantity: { type: Number, trim: true, default: 1 }
+            title: { type: String, trim: true, required: true },
+            productId: { type: String, trim: true, required: true },
+            quantity: { type: Number, trim: true, default: 1 },
+            price: { type: Number, trim: true, required: true }
 
         }
 

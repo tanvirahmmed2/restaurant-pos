@@ -47,7 +47,8 @@ const productSchema = new mongoose.Schema({
     },
     discount: {
         type: Number,
-        trim: true
+        trim: true,
+        default:0
     },
     createdAt: {
         type: Date,

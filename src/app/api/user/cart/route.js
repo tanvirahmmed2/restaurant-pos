@@ -40,12 +40,15 @@ export async function POST(req) {
 
         const user = auth.payload
 
+        const singleProductPrice = product.price - product.discount
+
         const existingItem = user.cart.find(item => item.productId === productId);
 
         if (existingItem) {
             existingItem.quantity += (quantity || 1);
+            existingItem.price += singleProductPrice * quantity || 1
         } else {
-            user.cart.push({ title, productId, quantity });
+            user.cart.push({ title, productId, quantity, price: singleProductPrice });
         }
 
         await user.save();

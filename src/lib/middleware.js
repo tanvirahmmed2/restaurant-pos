@@ -14,7 +14,7 @@ async function getAuthenticatedUser() {
         if (!token) return null;
 
         const decoded = jwt.verify(token, JWT_SECRET);
-        const user = await User.findById(decoded.id).select("-password"); 
+        const user = await User.findById(decoded.id).select("-password").lean(); 
         return user || null;
     } catch (error) {
         return null;

@@ -37,18 +37,12 @@ export async function POST(req) {
     try {
         await ConnectDB()
 
-        const auth= isLogin()
-        if(!auth.success){
-            return NextResponse.json({success:false, message:'Please login'}, {status:400})
-        }
-        const user= auth.payload
-
         const { name, phone, delivery, items, tabel, subTotal, tax, discount, totalPrice, paymentMethod } = await req.json()
         if (!delivery || !subTotal || !items || items.length === 0) {
             return NextResponse.json({ success: false, message: 'Missing order details' }, { status: 400 });
         }
 
-        const newOrder = new Order({ name, phone, delivery, items, tabel, subTotal, tax, discount, totalPrice, paymentMethod, createdBy:user._id })
+        const newOrder = new Order({ name, phone, delivery, items, tabel, subTotal, tax, discount, totalPrice, paymentMethod})
 
         await newOrder.save()
 

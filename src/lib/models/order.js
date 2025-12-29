@@ -51,12 +51,6 @@ const orderSchema = new mongoose.Schema({
         enum: ['confirmed', 'delivered', 'cancelled'],
         default: 'confirmed'
     },
-
-    createdBy: {
-        type: String,
-        trim:true,
-        required: true
-    },
     createdAt:{
         type: Date,
         default: Date.now

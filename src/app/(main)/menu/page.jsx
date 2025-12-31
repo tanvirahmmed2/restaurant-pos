@@ -39,7 +39,7 @@ const Menu = () => {
 
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full p-4 min-h-screen">
       <div className="w-full flex flex-col items-center justify-center gap-4">
         <h1 className="text-xl font-semibold w-full text-center">Category</h1>
 
@@ -57,7 +57,7 @@ const Menu = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-8 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 mt-8 w-full">
           {filteredData.length > 0 ? (
             filteredData.map((item) => (
 

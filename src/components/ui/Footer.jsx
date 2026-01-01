@@ -3,7 +3,7 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <div className='w-full p-4 bg-slate-100 border-t-2 border-black/10 flex flex-col items-center justify-center gap-4'>
+    <div className='w-full p-4 bg-white border-t-2 border-black/10 flex flex-col items-center justify-center gap-4'>
       <div className='w-full flex flex-row items-center justify-center gap-4'>
         <Link href={'/'}>Reviews</Link>
         <Link href={'/offers'}>Offers</Link>

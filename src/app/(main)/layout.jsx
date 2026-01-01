@@ -3,7 +3,7 @@ import Navbar from "@/components/ui/Navbar";
 
 export default function MainLayout({ children }) {
   return (
-    <div className="w-full relative  bg-linear-to-br from-rose-100 to-yellow-100 text-black">
+    <div className="w-full relative text-black">
       <Navbar /> 
       <main className="w-full mt-14">{children}</main>
       <Footer/>

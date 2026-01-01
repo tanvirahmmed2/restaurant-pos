@@ -18,7 +18,8 @@ const Reservation = () => {
     setFormData((prev)=>({...prev, [name]:value}))
   }
 
-  const handleSubmit=async()=>{
+  const handleSubmit=async(e)=>{
+    e.preventDefault()
     try {
       const response=await axios.post('/api/reservation', formData, {withCredentials:true})
       toast.success(response.data.message)

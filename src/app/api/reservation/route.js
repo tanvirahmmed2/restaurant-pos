@@ -63,7 +63,7 @@ export async function POST(req) {
         await newReservation.save()
 
         return NextResponse.json({
-            success: true, message:' Successfully placed reservation. Wait for confirmation'
+            success: true, message:'Placed reservation. Wait for confirmation'
         },{status:200})
     } catch (error) {
         return NextResponse.json({success:false, message:'Failed to create reservation', error:error.message}, {status:500})

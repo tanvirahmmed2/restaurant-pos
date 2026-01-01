@@ -62,7 +62,7 @@ export async function POST(req) {
         await newSupport.save()
 
         return NextResponse.json({
-            success: true, message:' Successfully placed support message. Wait for response'
+            success: true, message:'Placed support message. Wait for response'
         },{status:200})
     } catch (error) {
         return NextResponse.json({success:false, message:'Failed to create support message', error:error.message}, {status:500})

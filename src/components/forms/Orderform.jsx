@@ -63,6 +63,7 @@ const Orderform = ({ cartItems }) => {
     try {
         const response = await axios.post('/api/order', orderData, { withCredentials: true });
         toast.success(response.data.message);
+        fetchCart()
     } catch (error) {
         console.log(error)
         toast.error(error?.response?.data?.message || "Something went wrong");

@@ -1,5 +1,7 @@
 import ConnectDB from "@/lib/database/mongo";
+import { isLogin } from "@/lib/middleware";
 import Order from "@/lib/models/order";
+import User from "@/lib/models/user";
 import { NextResponse } from "next/server";
 
 
@@ -35,15 +37,24 @@ export async function GET() {
 export async function POST(req) {
     try {
         await ConnectDB()
+        const auth=await isLogin()
+        if(!auth.success) {
+            return NextResponse.json({ success: false, message: 'Please Login' }, { status: 400 });
+
+        }
+
+        const user= await auth.payload
 
         const { name, phone, delivery, items, tabel, subTotal, tax, discount, totalPrice, paymentMethod } = await req.json()
         if (!delivery || !subTotal || !items || items.length === 0) {
             return NextResponse.json({ success: false, message: 'Missing order details' }, { status: 400 });
         }
 
-        const newOrder = new Order({ name, phone, delivery, items, tabel, subTotal, tax, discount, totalPrice, paymentMethod})
+        const newOrder = new Order({ name, phone, delivery, items:user.cart, tabel, subTotal, tax, discount, totalPrice, paymentMethod})
 
         await newOrder.save()
+
+        await User.findByIdAndUpdate(user._id, { $set: { cart: [] } });
 
         return NextResponse.json({
             success: true,

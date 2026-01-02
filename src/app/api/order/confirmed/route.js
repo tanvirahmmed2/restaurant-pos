@@ -7,7 +7,7 @@ export async function GET() {
     try {
         await ConnectDB()
         const orders = await Order.find({status:'confirmed'}).sort({ createdAt: -1 })
-        if (!orders || orders.length === 0) {
+        if (!orders) {
             return NextResponse.json({
                 success: false,
                 message: 'No running order found'

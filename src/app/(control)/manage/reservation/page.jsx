@@ -47,8 +47,10 @@ const Reservation = async () => {
               <div className='w-full flex flex-row items-center justify-center gap-6'>
                 <DeleteReservation id={info._id} />
                 <ConfirmBooking id={info._id}/>
+                
 
               </div>
+              <p className='w-full text-center text-red-500'>{info.status}</p>
             </div>
           </div>
         ))}

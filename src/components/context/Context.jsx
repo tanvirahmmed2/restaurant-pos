@@ -32,7 +32,6 @@ export const ContextProvider = ({ children }) => {
         const response = await axios.get('/api/user/islogin', { withCredentials: true })
         setUserData(response.data.payload)
       } catch (error) {
-        console.log(error)
         setUserData(null)
 
       }
@@ -49,7 +48,6 @@ export const ContextProvider = ({ children }) => {
         const response = await axios.get('/api/website', { withCredentials: true })
         setSiteData(response.data.payload)
       } catch (error) {
-        console.log(error)
         setSiteData(null)
 
       }

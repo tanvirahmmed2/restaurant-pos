@@ -1,10 +1,13 @@
 import Logout from '@/components/buttons/Logout'
 import { isLogin } from '@/lib/middleware'
+import { redirect } from 'next/navigation'
 import React from 'react'
 
 const Profile = async () => {
   const auth = await isLogin()
+  if(!auth.success) return redirect('/login')
   const data = auth.payload
+
   
   return (
     <div className='w-full min-h-screen flex items-center justify-center p-4'>

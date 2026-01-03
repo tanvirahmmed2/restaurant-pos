@@ -1,3 +1,4 @@
+import PrintOrder from '@/components/buttons/PrintOrder'
 import { BASE_URL } from '@/lib/database/secret'
 import React from 'react'
 
@@ -38,6 +39,7 @@ const SingleOrderHistory = async ({ params }) => {
                 <p>Discount: {order.discount}</p>
                 <p>Tax: {order.tax}</p>
                 <p>Total: {order.totalPrice}</p>
+            <PrintOrder order={order}/>
             </div>
 
         </div>

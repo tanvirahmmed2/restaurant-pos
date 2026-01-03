@@ -34,7 +34,7 @@ const Intro = () => {
       <div className="absolute inset-0 -z-20">
         <Image
           src={product.image}
-          alt={product.title}
+          alt={product?.title}
           fill
           priority
           className='object-cover opacity-60 transition-opacity min-h-200 duration-700 blur-xl'
@@ -46,10 +46,10 @@ const Intro = () => {
           Welcome to
         </h2>
         <h1 className='text-6xl md:text-8xl font-serif text-white mb-6 drop-shadow-2xl'>
-          {siteData.title || 'Grand Kitchen'}
+          {siteData?.title || 'Grand Kitchen'}
         </h1>
         <p className='text-white/80 text-lg md:text-2xl font-light max-w-2xl mx-auto mb-10 leading-relaxed'>
-          Featuring today: <span className="text-sky-300 font-medium">{product.title}</span>.
+          Featuring today: <span className="text-sky-300 font-medium">{product?.title}</span>.
           Experience authentic flavors crafted with passion.
         </p>
 

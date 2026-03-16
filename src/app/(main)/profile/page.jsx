@@ -1,5 +1,5 @@
 import Logout from '@/components/buttons/Logout'
-import { isLogin } from '@/lib/middleware'
+import { isLogin } from '@/lib/auth/middleware'
 import { redirect } from 'next/navigation'
 import React from 'react'
 

@@ -1,5 +1,5 @@
 import ConnectDB from "@/lib/database/mongo";
-import { isLogin } from "@/lib/middleware";
+import { isLogin } from "@/lib/auth/middleware";
 import Order from "@/lib/models/order";
 import User from "@/lib/models/user";
 import { NextResponse } from "next/server";

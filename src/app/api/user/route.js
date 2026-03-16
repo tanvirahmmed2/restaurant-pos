@@ -2,6 +2,7 @@ import ConnectDB from "@/lib/database/mongo";
 import { NextResponse } from "next/server";
 import bcrypt from 'bcryptjs'
 import User from "@/lib/models/user";
+import { cookies } from "next/headers";
 
 
 export async function POST(req) {
@@ -58,15 +59,6 @@ export async function DELETE(req) {
                 success: false,
                 message: 'User not found'
             }, { status: 400 })
-        }
-
-        const users= await User.find({role: 'manager'})
-
-        if(users.length===1 && user.role ==='manager'){
-            return NextResponse.json({
-                success:false,
-                message:"This account can't be removed"
-            },{status:400})
         }
 
 

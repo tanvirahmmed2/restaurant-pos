@@ -5,6 +5,7 @@ import Staff from '@/lib/models/staff';
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import jwt from 'jsonwebtoken'
 
 
 export async function POST(req) {
@@ -102,14 +103,14 @@ export async function GET() {
         if (!decoded) {
             return NextResponse.json({ success: false, message: 'Failed jwt verification' }, { status: 400 })
         }
-        const Staff = await Staff.findById(decoded.id)
-        if (!Staff) {
+        const staff = await Staff.findById(decoded.id)
+        if (!staff) {
             return NextResponse.json({ success: false, message: 'Staff not found' }, { status: 400 })
         }
-        return NextResponse.json({ success: true, message: 'Successfully verified Staff', payload: Staff }, { status: 200 })
+        return NextResponse.json({ success: true, message: 'Successfully verified Staff', payload: staff }, { status: 200 })
 
     } catch (error) {
-        return NextResponse.json({ success: false, message: 'Failed to authenticate Staff', error: error.message }, { status: 500 })
+        return NextResponse.json({ success: false, message: error.message }, { status: 500 })
 
     }
 

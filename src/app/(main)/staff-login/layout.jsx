@@ -1,17 +1,11 @@
-import { isLogin } from '@/lib/auth/middleware'
-import { redirect } from 'next/navigation'
+
 import React from 'react'
 export const metadata={
-    title:'Login | Restaurant',
-    description:'Login page'
+    title:'Staff Login | Restaurant',
+    description:'Staff Login page'
 }
 
-const LoginLayout = async({children}) => {
-    const auth= await isLogin()
-
-    if(auth.success){
-        return redirect('/profile')
-    }
+const StaffLoginLayout = async({children}) => {
 
   return (
     <div>
@@ -20,4 +14,4 @@ const LoginLayout = async({children}) => {
   )
 }
 
-export default LoginLayout
+export default StaffLoginLayout

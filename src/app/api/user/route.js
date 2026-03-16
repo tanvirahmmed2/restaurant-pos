@@ -8,8 +8,8 @@ export async function POST(req) {
     try {
         await ConnectDB()
 
-        const { name, email, password, role } = await req.json()
-        if (!name || !email || !password || !role) {
+        const { name, email, password } = await req.json()
+        if (!name || !email || !password ) {
             return NextResponse.json({
                 success: false,
                 message: 'Please fill all information'
@@ -18,7 +18,7 @@ export async function POST(req) {
 
         const hashedPass = await bcrypt.hash(password, 10);
 
-        const newUser = await User({ name, email, password: hashedPass, role })
+        const newUser = await User({ name, email, password: hashedPass })
 
         await newUser.save()
 
@@ -94,7 +94,7 @@ export async function GET() {
     try {
         await ConnectDB()
 
-        const users = await User.find({ $or: [{ role: 'manager' }, { role: 'sales' }] })
+        const users = await User.find({})
         if (!users || users.length === 0) {
             return NextResponse.json({
                 success: false,

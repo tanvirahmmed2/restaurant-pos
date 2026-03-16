@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const staffSchema=new mongoose.Schema({
     name: {
         type: String,
         trim: true,
@@ -25,22 +25,21 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    cart: [
-        {
-            title: { type: String, trim: true, required: true },
-            productId: { type: String, trim: true, required: true },
-            quantity: { type: Number, trim: true, default: 1 },
-            price: { type: Number, trim: true, required: true }
-
+    role: {
+        type: String,
+        trim: true,
+        required: true,
+        enum: {
+            values: ['admin', 'manager', 'sales'],
+            message: '{VALUE} is not supporetd'
         }
-
-    ],
+    },
     isBanned: {
         type: Boolean,
         default: false
     }
 })
 
-const User = mongoose.models.users || mongoose.model('users', userSchema)
+const Staff = mongoose.models.Staff || mongoose.model('Staff', userSchema)
 
-export default User
+export default Staff

@@ -36,7 +36,7 @@ const Navbar = () => {
 
   return (
     <div className='w-full fixed top-0 z-50'>
-      <div className='w-full flex flex-row items-center justify-between h-14 px-4 bg-sky-600 text-white'>
+      <div className='w-full flex flex-row items-center justify-around h-14 px-4 bg-sky-600 text-white'>
         <Link href={'/'} className='text-2xl '>{siteData?.title|| 'Grand Kitchen'}</Link>
         <div>
 

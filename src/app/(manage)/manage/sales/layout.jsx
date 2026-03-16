@@ -1,7 +1,7 @@
 
 import SalesCart from "@/components/page/SalesCart"
-import SalesNavbar from "@/components/ui/SalesNavbar"
-import SalesSidebar from "@/components/ui/SalesSidebar"
+import SalesNavbar from "@/components/bar/SalesNavbar"
+import SalesSidebar from "@/components/bar/SalesSidebar"
 
 export const metadata = {
   title: 'Sales | Restaurant',

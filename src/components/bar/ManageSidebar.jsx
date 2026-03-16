@@ -14,9 +14,21 @@ import { SiGoogleanalytics } from "react-icons/si";
 import { FaRegMessage } from "react-icons/fa6";
 import { MdOutlineLocalOffer } from "react-icons/md";
 import { RiGlobalLine } from "react-icons/ri";
-import Logout from '../buttons/Logout';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 
 const ManageSidebar = () => {
+
+  const handleLogout=async()=>{
+    try {
+      const res= await axios.get('/api/staff/login',{withCredentials:true})
+      toast(res.data.message)
+      window.location.replace('/staff-login')
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to logout')
+      
+    }
+  }
   return (
     <div className='w-auto min-h-[calc(100vh-64px)] p-4 flex flex-col justify-between border-r-2 border-black/10'>
       <div className='w-auto flex flex-col gap-2'>
@@ -35,7 +47,7 @@ const ManageSidebar = () => {
         <Link href={'/'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><RiGlobalLine/>Website</Link>
         <Link href={'/manage/settings'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><IoSettingsOutline/>Setting</Link>
         <Link href={'/profile'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><PiFinnTheHumanLight/> Profile</Link>
-        <div className='w-auto flex flex-row items-center gap-3 cursor-pointer'><CiLogout/> <Logout/></div>
+        <button className='w-auto flex flex-row items-center gap-3 cursor-pointer' onClick={handleLogout}><CiLogout/> Logout</button>
 
       </div>
     </div>

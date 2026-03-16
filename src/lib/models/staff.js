@@ -10,7 +10,7 @@ const staffSchema=new mongoose.Schema({
         type: String,
         trim: true,
         required: true,
-        unique: [true, 'User with this email already exists']
+        unique: [true, 'Staff with this email already exists']
     },
     password: {
         type: String,

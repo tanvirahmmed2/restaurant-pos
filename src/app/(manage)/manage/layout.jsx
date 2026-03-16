@@ -1,5 +1,7 @@
-import ManageNavbar from "@/components/ui/ManageNavbar"
-import ManageSidebar from "@/components/ui/ManageSidebar"
+import ManageNavbar from "@/components/bar/ManageNavbar"
+import ManageSidebar from "@/components/bar/ManageSidebar"
+import { isStaff } from "@/lib/auth/staffmiddleware"
+import { redirect } from "next/navigation"
 
 export const metadata={
   title:'Manage | Restaurant',
@@ -8,6 +10,9 @@ export const metadata={
 
 
 const PosLayout = async({children, }) => {
+  const auth= await isStaff()
+  if(!auth.success) return redirect('/staff-login')
+
   return (
     <div className='w-full flex flex-col'>
         <ManageNavbar/>

@@ -1,4 +1,5 @@
-import LoginForm from '@/components/forms/LoginForm'
+
+import StaffLoginForm from '@/components/forms/StaffLoginForm'
 import React from 'react'
 
 const Login = () => {
@@ -8,9 +9,9 @@ const Login = () => {
         <div className='flex-1 flex items-center justify-center flex-col text-center'>
           <h1>Welcome to</h1>
           <h1 className='text-3xl font-semibold'>Restaurant</h1>
-          <p>Please login & access our services</p>
+          <p>Please login & manage services</p>
         </div>
-        <LoginForm />
+        <StaffLoginForm/>
       </div>
     </div>
   )

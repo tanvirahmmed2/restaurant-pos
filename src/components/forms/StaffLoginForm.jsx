@@ -3,7 +3,7 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
 
-const LoginForm = () => {
+const StaffLoginForm = () => {
     const [formData, setFormData]= useState({
         email:"",
         password:''
@@ -17,9 +17,9 @@ const LoginForm = () => {
     const loginHandle=async (e) => {
         e.preventDefault()
         try {
-            const response= await axios.post('/api/user/login', formData, {withCredentials:true})
+            const response= await axios.post('/api/staff/login', formData, {withCredentials:true})
             toast.success(response.data.message)
-            window.location.replace('/profile')
+            window.location.replace('/manage')
         } catch (error) {
             console.log(error)
             toast.error(error?.response?.data?.message)
@@ -42,4 +42,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default StaffLoginForm

@@ -29,7 +29,7 @@ export const ContextProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('/api/user/islogin', { withCredentials: true })
+        const response = await axios.get('/api/user', { withCredentials: true })
         setUserData(response.data.payload)
       } catch (error) {
         setUserData(null)

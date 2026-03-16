@@ -1,13 +1,24 @@
-import { BASE_URL } from '@/lib/database/secret'
+'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Item from '../card/Item'
+import axios from 'axios'
 
-const Latest = async () => {
-  const res = await fetch(`${BASE_URL}/api/product/latest`, { method: 'GET', cache: 'no-store' })
-  const data = await res.json()
-  if (!data.success) return <p>No data found</p>
-  const products = data.payload
+const Latest =  () => {
+  const [products, setProducts]= useState([])
+  useEffect(()=>{
+    const fetchProduct=async()=>{
+      try {
+        const res= await axios.get('/api/product/latest',{withCredentials:true})
+        setProducts(res.data.payload)
+      } catch (error) {
+        setProducts([])
+      }
+    }
+    fetchProduct()
+  },[])
+ 
+  if(!products || products.length===0) return console.log('No product found')
   return (
     <div className='w-full flex flex-col items-center justify-center p-4 gap-4 bg-blue-50 '>
       <h1 className='text-3xl text-center '>Latest Meals</h1>

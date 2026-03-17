@@ -1,38 +1,58 @@
 import cloudinary from "@/lib/database/cloudinary";
 import ConnectDB from "@/lib/database/mongo";
+import Category from "@/lib/models/category";
 import Product from "@/lib/models/product";
 import { NextResponse } from "next/server";
 import slugify from "slugify";
 
 
-export async function GET() {
+export async function GET(req) {
     try {
-        await ConnectDB()
+        await ConnectDB();
 
-        const products = await Product.find({}).sort({ createdAt: -1 }).lean()
+        const { searchParams } = new URL(req.url);
+        const categoryId = searchParams.get('q');
+
+        let query = {};
+
+        if (categoryId) {
+            const category = await Category.findById(categoryId)
+            
+            if (!category) {
+                return NextResponse.json({
+                    success: false,
+                    message: 'Category not found'
+                }, { status: 400 });
+            }
+            
+            query.categoryId = category._id;
+        }
+
+        const products = await Product.find(query)
+            .populate('categoryId', 'name slug')
+            .sort({ createdAt: -1 })
+            .lean();
 
         if (!products || products.length === 0) {
             return NextResponse.json({
                 success: false,
-                message: 'No product data found'
-            }, { status: 404 })
+                message: 'No products found'
+            }, { status: 404 });
         }
 
         return NextResponse.json({
             success: true,
-            message: 'Product data fetched successfully',
+            message: 'Products fetched successfully',
             payload: products
-        })
+        });
 
     } catch (error) {
         return NextResponse.json({
             success: false,
             message: 'Failed to fetch data',
             error: error.message
-        }, { status: 500 })
-
+        }, { status: 500 });
     }
-
 }
 
 export async function POST(req) {
@@ -86,15 +106,15 @@ export async function POST(req) {
             uploadStream.end(buffer);
         });
 
-        const newProduct = new Product({ 
-            title, 
-            slug, 
-            description, 
-            price, 
+        const newProduct = new Product({
+            title,
+            slug,
+            description,
+            price,
             discount,
-            image: cloudImage.secure_url, 
-            imageId: cloudImage.public_id, 
-            categoryId 
+            image: cloudImage.secure_url,
+            imageId: cloudImage.public_id,
+            categoryId
         });
 
         await newProduct.save();

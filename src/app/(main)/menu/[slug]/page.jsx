@@ -1,4 +1,4 @@
-import UserAddtoCart from '@/components/forms/UserAddtoCart'
+
 import Latest from '@/components/page/Latest'
 import { BASE_URL } from '@/lib/database/secret'
 import Image from 'next/image'
@@ -47,9 +47,7 @@ const SingleProduct = async ({ params }) => {
               {product.description}
             </p>
 
-            <div className="pt-4 border-t border-slate-100">
-              <UserAddtoCart product={product} />
-            </div>
+            
           </div>
         </div>
       </div>

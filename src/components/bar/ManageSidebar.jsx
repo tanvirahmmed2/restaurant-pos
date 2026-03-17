@@ -15,11 +15,12 @@ import { RiGlobalLine } from "react-icons/ri";
 
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { Context } from '../context/Context';
 
 const ManageSidebar = () => {
   const pathname = usePathname()
 
-  const {manageSidebar, setManageSidebar}= useContext()
+  const {manageSidebar, setManageSidebar}= useContext(Context)
 
   const handleLogout = async () => {
     try {
@@ -38,9 +39,8 @@ const ManageSidebar = () => {
        : 'text-gray-700 hover:bg-gray-100 hover:text-black'}`
 
   return (
-    <aside className="w-70 min-h-screen bg-white border-r shadow-sm flex flex-col justify-between p-4">
+    <aside className={`w-70 fixed top-14 ${!manageSidebar? '-translate-x-full':'translate-x-0'} transform duration-500 ease-in-out overflow-y-scroll pb-24 h-screen bg-white border-r shadow-sm flex flex-col justify-between p-4`}>
 
-      {/* TOP SECTION */}
       <div className="flex flex-col gap-6">
 
         <h2 className="text-xl font-semibold text-gray-800 px-2">Dashboard</h2>

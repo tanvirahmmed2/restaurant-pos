@@ -1,5 +1,5 @@
 
-import Latest from '@/components/page/Latest'
+import SameCategoryProducts from '@/components/page/SameCategoryProducts'
 import { BASE_URL } from '@/lib/database/secret'
 import Image from 'next/image'
 import React from 'react'
@@ -51,7 +51,7 @@ const SingleProduct = async ({ params }) => {
           </div>
         </div>
       </div>
-      <Latest />
+      <SameCategoryProducts id={product.categoryId}/>
     </div>
   )
 }

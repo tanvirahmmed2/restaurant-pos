@@ -32,9 +32,10 @@ const Menu = () => {
   return (
     <div className="w-full p-4 min-h-screen">
       <div className="w-full flex flex-col items-center justify-center gap-4">
-        <h1 className="text-2xl font-semibold w-full text-center">Menu</h1>
+        <button onClick={() => setCategoryId('')} className="text-2xl cursor-pointer font-semibold w-full text-center">Menu</button>
 
-        <div className="w-full grid grid-cols-3 md:grid-cols-7 justify-items-center gap-2">
+        <div className="w-full grid grid-cols-3 md:grid-cols-6 justify-items-center gap-2">
+          
           {categories.map((cat) => (
             <button
               key={cat._id}

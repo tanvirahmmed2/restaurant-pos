@@ -23,7 +23,7 @@ const Latest =  () => {
     <div className='w-full flex flex-col items-center justify-center p-4 gap-4 bg-blue-50 '>
       <h1 className='text-3xl text-center '>Latest Meals</h1>
       {
-        products && <div className='w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+        products && <div className='w-full grid grid-cols-2 sm:grid-cols-3 h-full md:grid-cols-4 lg:grid-cols-5 gap-4'>
           {
             products.map((item) => (
               <Link href={`/menu/${item.slug}`} key={item._id} className=''>

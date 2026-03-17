@@ -28,6 +28,7 @@ const Menu = () => {
         setAllProducts(response.data.payload)
       } catch (error) {
         console.error("Fetch error:", error)
+        setAllProducts([])
       }
     }
     fetchData()

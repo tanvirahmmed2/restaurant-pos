@@ -19,7 +19,7 @@ const Footer = () => {
         </div>
         <div className='w-full flex flex-col gap-1'>
           <h1>Quick Links</h1>
-          <Link className='opacity-60' href={'/categories'}>Categories</Link>
+          <Link className='opacity-60' href={'/category'}>Categories</Link>
           <Link className='opacity-60' href={'/flashsale'}>Flash Sale</Link>
           <Link className='opacity-60' href={'/recovery'}>Recovery</Link>
 

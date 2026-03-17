@@ -1,62 +1,59 @@
 import mongoose from "mongoose";
 
-
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
         trim: true,
-        required: true,
+        required: [true, 'Product title is required'],
     },
     slug: {
         type: String,
         trim: true,
         required: true,
-        unique: [true, 'Please choose another title']
+        unique: true,
+        lowercase: true,
+        index: true // Faster querying by slug
     },
     description: {
         type: String,
-        required: true
+        required: [true, 'Description is required']
     },
     price: {
         type: Number,
-        required: true,
-        trim: true
+        required: [true, 'Price is required'],
+        min: [0, 'Price cannot be negative']
     },
     image: {
         type: String,
-        trim: true,
-        required: true,
+        required: [true, 'Image URL is required'],
     },
     imageId: {
-        type: String,
-        trim: true,
-        required: true,
+        type: String, 
+        required: [true, 'Image ID is required'],
     },
-    category: {
-        type: String,
-        trim: true,
-        required: true,
-        enum: {
-            values: ['meals', 'snacks', 'drinks', 'combo', 'salad', 'dessert'],
-            message: '{VALUE} is not supported'
-        }
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        required: [true, 'Category is required'],
     },
     isAvailable: {
         type: Boolean,
-        default: true
+        default: true,
+        index: true 
     },
     discount: {
         type: Number,
-        trim: true,
-        default:0
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
+        default: 0,
+        min: [0, 'Discount cannot be negative'],
+        max: [100, 'Discount cannot exceed 100%']
     }
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+});
 
-})
 
-const Product = mongoose.models.products || mongoose.model('products', productSchema)
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
-export default Product
+export default Product;

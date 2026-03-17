@@ -14,7 +14,7 @@ const PosLayout = async ({ children, }) => {
   if (!auth.success) return redirect('/staff-login')
 
   return (
-    <div className='w-full mt-14 overflow-x-hidden relative'>
+    <div className='w-full mt-16 overflow-x-hidden relative'>
       <ManageNavbar />
       <ManageSidebar />
       {children}

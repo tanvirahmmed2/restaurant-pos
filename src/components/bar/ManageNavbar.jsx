@@ -7,7 +7,7 @@ import { AiOutlineBars } from 'react-icons/ai'
 const ManageNavbar = () => {
   const {manageSidebar, setManageSidebar, staffData}= useContext(Context)
   return (
-    <nav className='w-full border-b-2 fixed top-0 right-0 h-14 border-black/10 backdrop-blur-2xl flex flex-row items-center justify-between px-4'>
+    <nav className='w-full border-b-2 fixed top-0 right-0 h-14 border-black/10 backdrop-blur-2xl z-50 flex flex-row items-center justify-between px-4'>
         <div className='w-auto flex flex-row items-center justify-center gap-5'>
           <button className='text-xl cursor-pointer ' onClick={()=>setManageSidebar(!manageSidebar)}><AiOutlineBars/></button>
 

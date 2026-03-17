@@ -39,7 +39,7 @@ const ManageSidebar = () => {
        : 'text-gray-700 hover:bg-gray-100 hover:text-black'}`
 
   return (
-    <aside className={`w-70 fixed top-14 ${!manageSidebar? '-translate-x-full':'translate-x-0'} transform duration-500 ease-in-out overflow-y-scroll pb-24 h-screen bg-white border-r shadow-sm flex flex-col justify-between p-4`}>
+    <aside className={`w-70 fixed top-14 ${!manageSidebar? '-translate-x-full':'translate-x-0'} transform duration-500 ease-in-out overflow-y-scroll pb-24 h-screen z-50 bg-white border-r shadow-sm flex flex-col justify-between p-4`}>
 
       <div className="flex flex-col gap-6">
 
@@ -66,7 +66,7 @@ const ManageSidebar = () => {
         <div>
           <p className="text-xs text-gray-400 px-2 mb-2 uppercase">Products</p>
           <div className="flex flex-col gap-1">
-            <Link href="/manage/new-products" className={linkStyle('/manage/new-products')}>
+            <Link href="/manage/new-product" className={linkStyle('/manage/new-products')}>
               <FaRegEdit /> New Product
             </Link>
 

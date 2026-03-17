@@ -1,15 +1,15 @@
 'use client'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import Item from '../card/Item'
 import axios from 'axios'
+import Item from '@/components/card/Item'
 
 const FlashSale =  () => {
   const [products, setProducts]= useState([])
   useEffect(()=>{
     const fetchProduct=async()=>{
       try {
-        const res= await axios.get('/api/product/discount/latest',{withCredentials:true})
+        const res= await axios.get('/api/product/discount',{withCredentials:true})
         setProducts(res.data.payload)
       } catch (error) {
         setProducts([])
@@ -18,12 +18,11 @@ const FlashSale =  () => {
     fetchProduct()
   },[])
  
-  if(!products || products.length===0) return console.log('No product found')
   return (
-    <div className='w-full flex flex-col items-center justify-center p-4 gap-4 '>
-      <h1 className='text-3xl text-center '>Flash Sale!</h1>
+    <div className='w-full flex flex-col items-center p-4 gap-4 min-h-screen'>
+      <h1 className='text-3xl text-center '>Flash Sale</h1>
       {
-        products && <div className='w-full grid grid-cols-2 h-full  md:grid-cols-3 gap-4'>
+        (products && products.length!==0)? <div className='w-full grid grid-cols-2 h-full sm:grid-cols-3 md:grid-cols-4 gap-4'>
           {
             products.map((item) => (
               <Link href={`/menu/${item.slug}`} key={item._id} className='w-full'>
@@ -31,9 +30,8 @@ const FlashSale =  () => {
               </Link>
             ))
           }
-        </div>
+        </div>: <p>No offer available</p>
       }
-      <Link href={'/flashsale'} className='border border-black/20 rounded-2xl px-5 p-1 shadow cursor-pointer'>Load More</Link>
     </div>
   )
 }

@@ -27,6 +27,7 @@ const WebsiteDetails = () => {
         try {
             const response= await axios.post('/api/website', formData, {withCredentials:true})
             toast.success(response.data.message)
+            window.location.reload()
         } catch (error) {
             console.log(error)
             toast.error(error?.response?.data?.message || 'Failed to submit data')

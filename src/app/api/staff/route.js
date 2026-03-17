@@ -6,12 +6,18 @@ import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken'
+import { isAdmin } from '@/lib/auth/staffmiddleware';
 
 
 export async function POST(req) {
     try {
         await ConnectDB()
-
+        const auth= await isAdmin()
+        if(!auth.success){
+            return NextResponse.json({
+                success:false, message:auth.message
+            },{status:400})
+        }
         const { name, email, password,role } = await req.json()
         if (!name || !email || !password || !role ) {
             return NextResponse.json({

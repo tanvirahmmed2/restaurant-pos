@@ -13,7 +13,7 @@ const Intro = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get('/api/product', { withCredentials: true })
+        const response = await axios.get('/api/product/discount/latest', { withCredentials: true })
         setProducts(response.data.payload)
       } catch (error) {
         console.log(error)

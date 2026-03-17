@@ -13,7 +13,7 @@ const About = () => {
         </h1>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-12 flex flex-col gap-6">
+      <div className="w-full px-4 py-12 flex flex-col gap-6">
 
         <h2 className="text-3xl md:text-4xl font-semibold text-gray-800">
           Our Story
@@ -45,7 +45,7 @@ const About = () => {
       </div>
 
       <div className="bg-gray-50 py-12">
-        <div className="max-w-5xl mx-auto px-4 text-center">
+        <div className="w-full px-4 text-center">
 
           <h2 className="text-3xl font-semibold mb-10 text-gray-800">
             Why Choose Us

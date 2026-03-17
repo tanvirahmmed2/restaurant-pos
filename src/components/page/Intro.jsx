@@ -10,7 +10,7 @@ const Intro = () => {
   const [products, setProducts] = useState()
 
   useEffect(() => {
-    const fetchProducts = async() => {
+    const fetchProducts = async () => {
       try {
         const response = await axios.get('/api/product', { withCredentials: true })
         setProducts(response.data.payload)
@@ -29,7 +29,7 @@ const Intro = () => {
   const product = products[randomIndex]
 
   return (
-    <section className='relative w-full h-200 flex flex-col items-center justify-center overflow-hidden '>
+    <section className='relative w-full min-h-screen flex flex-col  items-center justify-center overflow-hidden '>
 
       <div className="absolute inset-0 -z-20">
         <Image
@@ -41,27 +41,34 @@ const Intro = () => {
         />
       </div>
 
-      <div className='z-10 text-center px-6'>
-        <h2 className='text-sky-400 uppercase tracking-[0.3em] text-sm mb-4 font-sans font-bold'>
-          Welcome to
-        </h2>
-        <h1 className='text-6xl md:text-8xl font-serif text-white mb-6 drop-shadow-2xl'>
-          {siteData?.title || 'Grand Kitchen'}
-        </h1>
-        <p className='text-white/80 text-lg md:text-2xl font-light max-w-2xl mx-auto mb-10 leading-relaxed'>
-          Featuring today: <span className="text-sky-300 font-medium">{product?.title}</span>.
-          Experience authentic flavors crafted with passion.
-        </p>
+      <div className='z-10 text-center px-6 flex flex-col md:flex-row items-center justify-center gap-8'>
+        <div className='w-full flex flex-col items-center justify-center md:items-start'>
+          <h2 className='text-sky-400 uppercase tracking-[0.3em] text-sm mb-4 font-sans font-bold'>
+            Welcome to
+          </h2>
+          <h1 className='text-6xl md:text-8xl font-serif text-white mb-6 drop-shadow-2xl'>
+            {siteData?.title || 'Grand Kitchen'}
+          </h1>
+          <p className='text-white/80 text-lg md:text-2xl font-light max-w-2xl mx-auto mb-10 leading-relaxed'>
+            Featuring today: <span className="text-sky-300 font-medium">{product?.title}</span>.
+            Experience authentic flavors crafted with passion.
+          </p>
 
-        <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
-          <Link href='/menu' className='w-48 py-4 bg-sky-600 hover:bg-sky-500 text-white transition-all duration-300 rounded-full font-semibold tracking-wide shadow-lg'>
-            VIEW MENU
-          </Link>
-          <Link href='/reservation' className='w-48 py-4 border border-white/30 hover:bg-white hover:text-black text-white transition-all duration-300 rounded-full font-semibold tracking-wide backdrop-blur-sm'>
-            BOOK A TABLE
-          </Link>
+          <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
+            <Link href='/menu' className='w-48 py-4 bg-sky-600 hover:bg-sky-500 text-white transition-all duration-300 rounded-full font-semibold tracking-wide shadow-lg'>
+              VIEW MENU
+            </Link>
+            <Link href='/reservation' className='w-48 py-4 border border-white/30 hover:bg-white bg-white/40 hover:text-black text-white transition-all duration-300 rounded-full font-semibold tracking-wide backdrop-blur-sm'>
+              BOOK A TABLE
+            </Link>
+          </div>
+
+        </div>
+        <div className='w-full md:w-1/2 p-2 overflow-hidden aspect-square'>
+          <Image src={product.image} alt='product image' width={1000} height={1000} className='w-full object-cover aspect-square overflow-hidden rounded-2xl'/>
         </div>
       </div>
+
     </section>
   )
 }

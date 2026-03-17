@@ -7,7 +7,7 @@ import React from 'react'
 
 const Main = () => {
   return (
-    <div className='w-full px-1 sm:px-4 overflow-hidden min-h-screen flex flex-col items-center justify-center py-5'>
+    <div className='w-full px-1 sm:px-4 overflow-hidden min-h-screen flex flex-col items-center justify-center '>
       <Intro/>
       <Latest/>
       <Review/>

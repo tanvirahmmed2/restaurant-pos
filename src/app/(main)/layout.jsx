@@ -3,7 +3,7 @@ import Navbar from "@/components/bar/Navbar";
 
 export default function MainLayout({ children }) {
   return (
-    <div className="w-full relative pt-14 text-black ">
+    <div className="w-full relative pt-16 text-black ">
       <Navbar /> 
       {children}
       <Footer/>

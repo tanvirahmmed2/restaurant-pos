@@ -11,7 +11,8 @@ const AddProduct = () => {
         title: '',
         description: '',
         price: '',
-        category: '',
+        discount: '0',
+        categoryId: '',
         image: null,
     })
 
@@ -32,16 +33,19 @@ const AddProduct = () => {
             newData.append('title', formData.title)
             newData.append('description', formData.description)
             newData.append('price', formData.price)
-            newData.append('category', formData.category)
+            newData.append('discount', formData.discount)
+            newData.append('categoryId', formData.categoryId)
             newData.append('image', formData.image)
 
             const response = await axios.post('/api/product', newData, { withCredentials: true })
             toast.success(response.data.message)
+            
             setFormData({
                 title: '',
                 description: '',
                 price: '',
-                category: '',
+                discount: '0',
+                categoryId: '',
                 image: null,
             })
             e.target.reset()
@@ -69,8 +73,8 @@ const AddProduct = () => {
             </div>
 
             <div className='w-full flex flex-col gap-1.5'>
-                <label htmlFor="category" className='text-sm font-medium text-slate-700'>Category</label>
-                <select name="category" id="category" required value={formData.category} onChange={handleChange} 
+                <label htmlFor="categoryId" className='text-sm font-medium text-slate-700'>Category</label>
+                <select name="categoryId" id="categoryId" required value={formData.categoryId} onChange={handleChange} 
                     className='w-full p-2 px-3 outline-none border border-slate-300 rounded-lg focus:ring-2 focus:ring-black/5 focus:border-black transition-all bg-white'>
                     <option value="">--Select--</option>
                     {categories && categories.map((cat) => (
@@ -79,10 +83,17 @@ const AddProduct = () => {
                 </select>
             </div>
 
-            <div className='w-full flex flex-col gap-1.5'>
-                <label htmlFor="price" className='text-sm font-medium text-slate-700'>Price</label>
-                <input type="number" name='price' id='price' min={0} step="0.01" required value={formData.price} onChange={handleChange} 
-                    className='w-full p-2 px-3 outline-none border border-slate-300 rounded-lg focus:ring-2 focus:ring-black/5 focus:border-black transition-all' />
+            <div className='flex w-full gap-4'>
+                <div className='w-1/2 flex flex-col gap-1.5'>
+                    <label htmlFor="price" className='text-sm font-medium text-slate-700'>Price</label>
+                    <input type="number" name='price' id='price' min={0} step="0.01" required value={formData.price} onChange={handleChange} 
+                        className='w-full p-2 px-3 outline-none border border-slate-300 rounded-lg focus:ring-2 focus:ring-black/5 focus:border-black transition-all' />
+                </div>
+                <div className='w-1/2 flex flex-col gap-1.5'>
+                    <label htmlFor="discount" className='text-sm font-medium text-slate-700'>Discount </label>
+                    <input type="number" name='discount' id='discount' min={0} max={100} value={formData.discount} onChange={handleChange} 
+                        className='w-full p-2 px-3 outline-none border border-slate-300 rounded-lg focus:ring-2 focus:ring-black/5 focus:border-black transition-all' />
+                </div>
             </div>
 
             <div className='w-full flex flex-col gap-1.5'>

@@ -37,71 +37,82 @@ export async function GET() {
 
 export async function POST(req) {
     try {
-        await ConnectDB()
+        await ConnectDB();
 
-        const formData = await req.formData()
+        const formData = await req.formData();
 
-        const title = formData.get('title')
-        const description = formData.get('description')
-        const imageFile = formData.get('image')
-        const category = formData.get('category')
-        const price = formData.get('price')
-        if (!title || !description || !category || !price) {
+        const title = formData.get('title');
+        const description = formData.get('description');
+        const imageFile = formData.get('image');
+        const categoryId = formData.get('categoryId');
+        const price = Number(formData.get('price'));
+        const discount = Number(formData.get('discount')) || 0;
+
+        if (!title || !description || !categoryId || !price) {
             return NextResponse.json({
                 success: false,
-                message: 'Please fill all information'
-            }, { status: 400 })
+                message: 'Please fill all required information'
+            }, { status: 400 });
         }
 
         if (!imageFile) {
             return NextResponse.json({
                 success: false,
-                message: 'Please ad an image'
-            }, { status: 400 })
+                message: 'Please add an image'
+            }, { status: 400 });
         }
-        const slug = slugify(title, { strict: true })
 
-        const existProduct = await Product.findOne({ slug })
+        const slug = slugify(title, { lower: true, strict: true });
 
+        const existProduct = await Product.findOne({ slug });
         if (existProduct) {
             return NextResponse.json({
                 success: false,
-                message: 'Product available with this title, please change'
-            }, { status: 400 })
+                message: 'A product with this title already exists'
+            }, { status: 400 });
         }
 
-        const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+        const arrayBuffer = await imageFile.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
 
         const cloudImage = await new Promise((resolve, reject) => {
-            const stream = cloudinary.uploader.upload_stream(
+            const uploadStream = cloudinary.uploader.upload_stream(
                 { folder: "restaurant-pos" },
-                (err, result) => {
-                    if (err) reject(err);
+                (error, result) => {
+                    if (error) reject(error);
                     else resolve(result);
                 }
             );
-            stream.end(imageBuffer);
+            uploadStream.end(buffer);
         });
 
-        const newProduct = new Product({ title, slug, description, price, image: cloudImage.secure_url, imageId: cloudImage.public_id, category })
+        const newProduct = new Product({ 
+            title, 
+            slug, 
+            description, 
+            price, 
+            discount,
+            image: cloudImage.secure_url, 
+            imageId: cloudImage.public_id, 
+            categoryId 
+        });
 
-        await newProduct.save()
+        await newProduct.save();
+
         return NextResponse.json({
             success: true,
             message: 'Successfully added new product',
             payload: newProduct
-        }, { status: 200 })
-
+        }, { status: 201 });
 
     } catch (error) {
+        console.error("POST_PRODUCT_ERROR:", error);
         return NextResponse.json({
             success: false,
             message: 'Failed to add product',
             error: error.message
-        }, { status: 500 })
-
+        }, { status: 500 });
     }
-
 }
 
 export async function DELETE(req) {

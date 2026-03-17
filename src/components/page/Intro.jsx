@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
+import { motion } from 'framer-motion'
 import { Context } from '../context/Context'
 
 const Intro = () => {
@@ -49,7 +50,7 @@ const Intro = () => {
           <h1 className='text-6xl md:text-8xl font-serif text-white mb-6 drop-shadow-2xl'>
             {siteData?.title || 'Grand Kitchen'}
           </h1>
-          <p className='text-white/80 text-lg md:text-2xl font-light max-w-2xl mx-auto mb-10 leading-relaxed'>
+          <p className='text-white/80 text-lg md:text-2xl font-light max-w-2xl mb-10'>
             Featuring today: <span className="text-sky-300 font-medium">{product?.title}</span>.
             Experience authentic flavors crafted with passion.
           </p>
@@ -64,9 +65,9 @@ const Intro = () => {
           </div>
 
         </div>
-        <div className='w-full md:w-1/2 p-2 overflow-hidden aspect-square'>
-          <Image src={product.image} alt='product image' width={1000} height={1000} className='w-full object-cover aspect-square overflow-hidden rounded-2xl'/>
-        </div>
+        <motion.div initial={{opacity:0, scale:0.8}} whileInView={{opacity:1, scale:1}} transition={{duration:0.5}} className='w-1/2 hidden md:flex p-2 overflow-hidden aspect-square'>
+          <Image src={product.image} alt='product image' width={1000} height={1000} className='w-full object-cover aspect-square overflow-hidden rounded-2xl shadow border border-black/20'/>
+        </motion.div>
       </div>
 
     </section>

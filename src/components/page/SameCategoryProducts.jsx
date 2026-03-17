@@ -19,7 +19,7 @@ const SameCategoryProducts = ({id}) => {
     },[id])
 
   return (
-    <div className='w-full flex flex-col items-center'>
+    <div className='w-full flex flex-col items-center p-1 sm:p-4'>
       {
         products.length>0? <div className='w-full flex flex-col items-center gap-4 py-6'>
             <p>You May Also Love</p>

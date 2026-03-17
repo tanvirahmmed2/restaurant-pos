@@ -4,12 +4,12 @@ import React, { useEffect, useState } from 'react'
 import Item from '../card/Item'
 import axios from 'axios'
 
-const Latest =  () => {
+const FlashSale =  () => {
   const [products, setProducts]= useState([])
   useEffect(()=>{
     const fetchProduct=async()=>{
       try {
-        const res= await axios.get('/api/product/latest',{withCredentials:true})
+        const res= await axios.get('/api/product/discount/latest',{withCredentials:true})
         setProducts(res.data.payload)
       } catch (error) {
         setProducts([])
@@ -21,9 +21,9 @@ const Latest =  () => {
   if(!products || products.length===0) return console.log('No product found')
   return (
     <div className='w-full flex flex-col items-center justify-center p-4 gap-4 '>
-      <h1 className='text-3xl text-center '>Top Picks</h1>
+      <h1 className='text-3xl text-center '>Flash Sale!</h1>
       {
-        products && <div className='w-full grid grid-cols-2 h-full sm:grid-cols-3 md:grid-cols-4 gap-4'>
+        products && <div className='w-full grid grid-cols-2 h-full  md:grid-cols-3 gap-4'>
           {
             products.map((item) => (
               <Link href={`/menu/${item.slug}`} key={item._id} className='w-full'>
@@ -37,4 +37,4 @@ const Latest =  () => {
   )
 }
 
-export default Latest
+export default FlashSale

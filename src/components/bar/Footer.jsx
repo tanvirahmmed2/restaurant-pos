@@ -18,15 +18,15 @@ const Footer = () => {
 
         </div>
         <div className='w-full flex flex-col gap-1'>
-          <h1>My Dashboard</h1>
-          <Link className='opacity-60' href={'/login'}>Access</Link>
-          <Link className='opacity-60' href={'/profile'}>Profile</Link>
+          <h1>Quick Links</h1>
+          <Link className='opacity-60' href={'/categories'}>Categories</Link>
+          <Link className='opacity-60' href={'/flashsale'}>Flash Sale</Link>
           <Link className='opacity-60' href={'/recovery'}>Recovery</Link>
 
         </div>
         <div className='w-full flex flex-col gap-1'>
-          <h1>Management</h1>
-          <Link className='opacity-60' href={'/staff-login'}>Login</Link>
+          <h1>My Dashboard</h1>
+          <Link className='opacity-60' href={'/login'}>Login</Link>
           <Link className='opacity-60' href={'/manage'}>Access</Link>
           <Link className='opacity-60' href={'/help'}>Help</Link>
 

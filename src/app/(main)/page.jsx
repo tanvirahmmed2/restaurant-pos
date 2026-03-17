@@ -1,5 +1,5 @@
 import About from '@/components/page/About'
-import Category from '@/components/page/Category'
+import FlashSale from '@/components/page/FlashSale'
 import Intro from '@/components/page/Intro'
 import Latest from '@/components/page/Latest'
 import Review from '@/components/page/Review'
@@ -7,11 +7,11 @@ import React from 'react'
 
 const Main = () => {
   return (
-    <div className='w-full px-1 sm:px-4 overflow-hidden min-h-screen flex flex-col items-center justify-center '>
+    <div className='w-full overflow-hidden min-h-screen flex flex-col items-center justify-center '>
       <Intro/>
       <Latest/>
       <Review/>
-      <Category/>
+      <FlashSale/>
       <About/>
     </div>
   )

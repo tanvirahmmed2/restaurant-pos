@@ -28,6 +28,7 @@ const AddCategoryForm = () => {
             const res= await axios.post('/api/category', data, {withCredentials:true})
             toast.success(res.data.message)
             fetchCategories()
+            e.target.reset()
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Failed to add category')
             

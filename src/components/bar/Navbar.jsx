@@ -11,7 +11,7 @@ import axios from 'axios'
 import { Context } from '../context/Context'
 
 const Navbar = () => {
-  const {siteData}= useContext(Context)
+  const { siteData } = useContext(Context)
   const [isSidebar, setIsSidebar] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const [role, setRole] = useState('')
@@ -37,14 +37,14 @@ const Navbar = () => {
   return (
     <div className='w-full fixed top-0 z-50 right-0'>
       <div className='w-full flex flex-row items-center justify-around h-16 px-4 bg-slate-800 text-white'>
-        <Link href={'/'} className='text-3xl '>{siteData?.title|| 'Grand Kitchen'}</Link>
+        <Link href={'/'} className='text-3xl '>{siteData?.title || 'Grand Kitchen'}</Link>
         <div>
 
         </div>
-        <div className='w-auto h-full hidden md:flex flex-row items-center justify-center gap-2 text-xl'>
+        <div className='w-auto h-full hidden md:flex flex-row items-center justify-center gap-6 text-xl'>
           <Link href={'/'}>Home</Link>
           <Link href={'/menu'}>Menu</Link>
-            <Link href={'/reservation'}>Book</Link>
+          <Link href={'/reservation'}>Book</Link>
           {role === 'manager' && <Link href={'/manage'}>Manage</Link>}
           {role === 'sales' && <Link href={'/sales'}>Sales</Link>}
           {

@@ -1,56 +1,135 @@
 'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useContext } from 'react'
+import { usePathname } from 'next/navigation'
 
 import { AiOutlineUnorderedList } from "react-icons/ai";
-import { IoHomeOutline } from "react-icons/io5";
+import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { PiFinnTheHumanLight } from "react-icons/pi";
-import { FaHistory } from "react-icons/fa";
-import { IoSettingsOutline } from "react-icons/io5";
-import { FaRegEdit } from "react-icons/fa";
+import { FaHistory, FaRegEdit } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
-import { MdManageAccounts } from "react-icons/md";
+import { MdManageAccounts, MdOutlineLocalOffer } from "react-icons/md";
 import { SiGoogleanalytics } from "react-icons/si";
 import { FaRegMessage } from "react-icons/fa6";
-import { MdOutlineLocalOffer } from "react-icons/md";
 import { RiGlobalLine } from "react-icons/ri";
+
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const ManageSidebar = () => {
+  const pathname = usePathname()
 
-  const handleLogout=async()=>{
+  const {manageSidebar, setManageSidebar}= useContext()
+
+  const handleLogout = async () => {
     try {
-      const res= await axios.get('/api/staff/login',{withCredentials:true})
-      toast(res.data.message)
+      const res = await axios.get('/api/staff/login', { withCredentials: true })
+      toast.success(res.data.message)
       window.location.replace('/staff-login')
     } catch (error) {
       toast.error(error?.response?.data?.message || 'Failed to logout')
-      
     }
   }
+
+  const linkStyle = (path) =>
+    `flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 
+     ${pathname === path 
+       ? 'bg-black text-white shadow-md' 
+       : 'text-gray-700 hover:bg-gray-100 hover:text-black'}`
+
   return (
-    <div className='w-auto min-h-[calc(100vh-64px)] p-4 flex flex-col justify-between border-r-2 border-black/10'>
-      <div className='w-auto flex flex-col gap-2'>
-        <Link href={'/manage'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><IoHomeOutline/> Home</Link>
-        <Link href={'/manage/orders'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><AiOutlineUnorderedList/> Orders</Link>
-        <Link href={'/manage/offers'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><MdOutlineLocalOffer/> Offers</Link>
-        <Link href={'/manage/history'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><FaHistory/> History</Link>
-        <Link href={'/manage/products'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><FaRegEdit/> Products</Link>
-        <Link href={'/manage/people'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><MdManageAccounts/> People</Link>
-        <Link href={'/manage/analytics'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><SiGoogleanalytics/> Analytics</Link>
-        <Link href={'/manage/reservation'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><FaRegMessage/>Reservation</Link>
-        <Link href={'/manage/support'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><FaRegMessage/> Support</Link>
+    <aside className="w-70 min-h-screen bg-white border-r shadow-sm flex flex-col justify-between p-4">
+
+      {/* TOP SECTION */}
+      <div className="flex flex-col gap-6">
+
+        <h2 className="text-xl font-semibold text-gray-800 px-2">Dashboard</h2>
+
+        <div className="flex flex-col gap-1">
+          <Link href="/manage" className={linkStyle('/manage')}>
+            <IoHomeOutline /> Home
+          </Link>
+
+          <Link href="/manage/orders" className={linkStyle('/manage/orders')}>
+            <AiOutlineUnorderedList /> Orders
+          </Link>
+
+          <Link href="/manage/offers" className={linkStyle('/manage/offers')}>
+            <MdOutlineLocalOffer /> Offers
+          </Link>
+
+          <Link href="/manage/history" className={linkStyle('/manage/history')}>
+            <FaHistory /> History
+          </Link>
+        </div>
+
+        <div>
+          <p className="text-xs text-gray-400 px-2 mb-2 uppercase">Products</p>
+          <div className="flex flex-col gap-1">
+            <Link href="/manage/new-products" className={linkStyle('/manage/new-products')}>
+              <FaRegEdit /> New Product
+            </Link>
+
+            <Link href="/manage/products" className={linkStyle('/manage/products')}>
+              <FaRegEdit /> Products
+            </Link>
+
+            <Link href="/manage/new-category" className={linkStyle('/manage/new-category')}>
+              <FaRegEdit /> New Category
+            </Link>
+
+            <Link href="/manage/categories" className={linkStyle('/manage/categories')}>
+              <FaRegEdit /> Category List
+            </Link>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-xs text-gray-400 px-2 mb-2 uppercase">Management</p>
+          <div className="flex flex-col gap-1">
+            <Link href="/manage/people" className={linkStyle('/manage/people')}>
+              <MdManageAccounts /> People
+            </Link>
+
+            <Link href="/manage/analytics" className={linkStyle('/manage/analytics')}>
+              <SiGoogleanalytics /> Analytics
+            </Link>
+
+            <Link href="/manage/reservation" className={linkStyle('/manage/reservation')}>
+              <FaRegMessage /> Reservation
+            </Link>
+
+            <Link href="/manage/support" className={linkStyle('/manage/support')}>
+              <FaRegMessage /> Support
+            </Link>
+          </div>
+        </div>
+
       </div>
 
-      <div className='w-auto flex flex-col gap-2'>
-        <Link href={'/'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><RiGlobalLine/>Website</Link>
-        <Link href={'/manage/settings'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><IoSettingsOutline/>Setting</Link>
-        <Link href={'/profile'} className='w-auto flex flex-row items-center gap-3 cursor-pointer'><PiFinnTheHumanLight/> Profile</Link>
-        <button className='w-auto flex flex-row items-center gap-3 cursor-pointer' onClick={handleLogout}><CiLogout/> Logout</button>
+      <div className="flex flex-col gap-2 border-t pt-4">
 
+        <Link href="/" className={linkStyle('/')}>
+          <RiGlobalLine /> Website
+        </Link>
+
+        <Link href="/manage/settings" className={linkStyle('/manage/settings')}>
+          <IoSettingsOutline /> Settings
+        </Link>
+
+        <Link href="/profile" className={linkStyle('/profile')}>
+          <PiFinnTheHumanLight /> Profile
+        </Link>
+
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3 px-3 py-2 rounded-xl text-red-500 hover:bg-red-50 transition"
+        >
+          <CiLogout /> Logout
+        </button>
       </div>
-    </div>
+
+    </aside>
   )
 }
 

@@ -25,16 +25,6 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    cart: [
-        {
-            title: { type: String, trim: true, required: true },
-            productId: { type: String, trim: true, required: true },
-            quantity: { type: Number, trim: true, default: 1 },
-            price: { type: Number, trim: true, required: true }
-
-        }
-
-    ],
     isBanned: {
         type: Boolean,
         default: false

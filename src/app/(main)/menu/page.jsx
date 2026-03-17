@@ -27,7 +27,6 @@ const Menu = () => {
         const response = await axios.get('/api/product', { withCredentials: true })
         setAllProducts(response.data.payload)
       } catch (error) {
-        console.error("Fetch error:", error)
         setAllProducts([])
       }
     }

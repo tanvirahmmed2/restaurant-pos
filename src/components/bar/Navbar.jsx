@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Profile from '../buttons/Profile'
 import Sidebar from './Sidebar'
 
@@ -8,10 +8,10 @@ import { FaBars } from "react-icons/fa";
 import { RxCross2 } from "react-icons/rx";
 import Logout from '../buttons/Logout'
 import axios from 'axios'
-import { useCart } from '../context/Context'
+import { Context } from '../context/Context'
 
 const Navbar = () => {
-  const {siteData}= useCart()
+  const {siteData}= useContext(Context)
   const [isSidebar, setIsSidebar] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const [role, setRole] = useState('')

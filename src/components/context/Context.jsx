@@ -3,28 +3,17 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Context = createContext()
+export const Context = createContext()
 
 export const ContextProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([])
+  const [cart, setCart] = useState({ items: [] })
   const [siteData, setSiteData] = useState(null)
   const [userData, setUserData] = useState(null)
+  const [staffData, setStaffData] = useState(null)
+  const [categories, setCategories] = useState([])
 
-  const fetchCart = async () => {
-    try {
-      const res = await axios.get('/api/user/cart', { withCredentials: true })
-      const plainCart = res.data.payload.map(item => ({
-        _id: item._id.toString(),
-        productId: item.productId.toString(),
-        title: item.title,
-        quantity: item.quantity,
-        price: item.price
-      }))
-      setCartItems(plainCart)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const [manageSidebar, setManageSidebar] = useState(false)
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -33,6 +22,21 @@ export const ContextProvider = ({ children }) => {
         setUserData(response.data.payload)
       } catch (error) {
         setUserData(null)
+
+      }
+
+    }
+    fetchUserData()
+
+  }, [])
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('/api/staff', { withCredentials: true })
+        setStaffData(response.data.payload)
+      } catch (error) {
+        setStaffData(null)
 
       }
 
@@ -57,14 +61,33 @@ export const ContextProvider = ({ children }) => {
 
   }, [])
 
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get('/api/category', { withCredentials: true })
+      setCategories(res.data.payload)
+    } catch (error) {
+      setCategories([])
 
-  useEffect(() => { fetchCart() }, [])
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
+
+
+  const contextValue = {
+    manageSidebar, setManageSidebar,
+    cart, siteData, userData, staffData,
+    categories,
+    fetchCategories,
+  }
 
   return (
-    <Context.Provider value={{ cartItems, fetchCart, siteData , userData}}>
+    <Context.Provider value={contextValue}>
       {children}
     </Context.Provider>
   )
 }
 
-export const useCart = () => useContext(Context)

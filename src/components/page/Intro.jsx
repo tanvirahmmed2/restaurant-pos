@@ -1,12 +1,12 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
-import { useCart } from '../context/Context'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
+import { Context } from '../context/Context'
 
 const Intro = () => {
-  const { siteData } = useCart()
+  const { siteData } = useContext(Context)
   const [products, setProducts] = useState()
 
   useEffect(() => {

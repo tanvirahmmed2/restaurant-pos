@@ -1,14 +1,19 @@
 import ConnectDB from "@/lib/database/mongo";
-import { isLogin } from "@/lib/auth/middleware";
 import Order from "@/lib/models/order";
-import User from "@/lib/models/user";
 import { NextResponse } from "next/server";
 import Customer from "@/lib/models/customer";
+import { isStaff } from "@/lib/auth/staffmiddleware";
 
 
 export async function GET() {
     try {
         await ConnectDB()
+        const auth= await isStaff()
+                if(!auth.success){
+                    return NextResponse.json({
+                        success:false, message:auth.message
+                    },{status:400})
+                }
         const orders = await Order.find({}).sort({ createdAt: -1 })
         if (!orders || orders.length === 0) {
             return NextResponse.json({

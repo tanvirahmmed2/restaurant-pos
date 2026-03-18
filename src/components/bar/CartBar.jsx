@@ -6,24 +6,26 @@ import Image from 'next/image'
 import { MdDeleteOutline } from 'react-icons/md'
 
 const CartBar = () => {
-    const { cartBar, setCartBar, addToCart, removeFromCart, decreaseQuantity, clearCart, fetchCart, cart } = useContext(Context)
-   const [subTotal, setSubTotal] = useState(0)
-const [totalPrice, setTotalPrice] = useState(0)
-const [totalDiscount, setTotalDiscount] = useState(0)
+    const { cartBar, setCartBar, addToCart, removeFromCart, decreaseQuantity, clearCart, userData, cart } = useContext(Context)
+    const [subTotal, setSubTotal] = useState(0)
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [totalDiscount, setTotalDiscount] = useState(0)
 
-useEffect(() => {
-    let tempSubTotal = 0
-    let tempTotalPrice = 0
+    useEffect(() => {
+        let tempSubTotal = 0
+        let tempTotalPrice = 0
 
-    cart?.items.forEach((item) => {
-        tempSubTotal += item.price * item.quantity
-        tempTotalPrice += item.salePrice
-    })
+        cart?.items.forEach((item) => {
+            tempSubTotal += item.price * item.quantity
+            tempTotalPrice += item.salePrice
+        })
 
-    setSubTotal(tempSubTotal)
-    setTotalPrice(tempTotalPrice)
-    setTotalDiscount(tempSubTotal - tempTotalPrice)
-}, [cart])
+        setSubTotal(tempSubTotal)
+        setTotalPrice(tempTotalPrice)
+        setTotalDiscount(tempSubTotal - tempTotalPrice)
+    }, [cart])
+
+    const [phone, setPhone]= useState(userData?.phone || '')
 
     return (
         <div className={`${!cartBar ? 'translate-x-full' : 'translate-x-0'} z-40 transform ease-in-out duration-500 w-full sm:w-100 fixed top-16 right-0 bg-white border border-black/20 shadow-xl h-screen overflow-y-scroll flex flex-col items-center p-4 pb-28`}>

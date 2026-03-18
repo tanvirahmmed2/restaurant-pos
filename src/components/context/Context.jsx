@@ -74,8 +74,8 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
- 
- const fetchCart = () => {
+
+const fetchCart = () => {
   if (typeof window === 'undefined') return
   const storedCart = localStorage.getItem('cart')
 

@@ -58,7 +58,7 @@ const Support = () => {
             <label htmlFor="message">Message</label>
             <textarea name="message" id="message" required onChange={handleChange} value={formData.message} className='border border-black/30 outline-none px-2 p-1' />
           </div>
-          <button type='submit' className='bg-sky-600 w-auto cursor-pointer p-1 text-white hover:scale-[1.02] transform ease-in-out duration-500'>Submit</button>
+          <button type='submit' className='bg-slate-600 w-auto cursor-pointer p-1 text-white hover:scale-[1.02] transform ease-in-out duration-500'>Submit</button>
         </form>
       </div>
 

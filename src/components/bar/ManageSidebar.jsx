@@ -89,6 +89,21 @@ const ManageSidebar = () => {
             </Link>
           </div>
         </div>
+        
+        
+        <div>
+          <p className="text-xs text-gray-400 px-2 mb-2 uppercase">Expenses</p>
+          <div className="flex flex-col gap-1">
+            <Link href="/manage/new-expense" className={linkStyle('/manage/new-expense')}>
+              <FaRegEdit /> New Expenses
+            </Link>
+
+            <Link href="/manage/expenses" className={linkStyle('/manage/expenses')}>
+              <FaRegEdit /> Expenses
+            </Link>
+
+          </div>
+        </div>
 
         <div>
           <p className="text-xs text-gray-400 px-2 mb-2 uppercase">Management</p>

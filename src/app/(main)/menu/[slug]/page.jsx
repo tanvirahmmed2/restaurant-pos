@@ -19,7 +19,7 @@ const SingleProduct = async ({ params }) => {
 
   return (
     <div className='w-full min-h-screen bg-slate-50 pb-20'>
-      <div className='w-full bg-slate-900 h-64 relative' />
+      <div className='w-full bg-slate-500 h-64 relative' />
 
       <div className='max-w-5xl mx-auto px-4 -mt-32 relative z-10'>
         <div className='bg-white rounded-3xl shadow-xl overflow-hidden'>

@@ -1,11 +1,11 @@
 'use client'
-import { useCart } from '@/components/context/Context'
+import { Context} from '@/components/context/Context'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 
 const Support = () => {
-  const {siteData}= useCart()
+  const {siteData}= useContext(Context)
 
     const [formData, setFormData]= useState({
     name:'',

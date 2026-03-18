@@ -7,7 +7,7 @@ import { MdDeleteOutline } from 'react-icons/md'
 
 const CartBar = () => {
     const { cartBar, setCartBar, addToCart, removeFromCart, decreaseQuantity, clearCart, fetchCart, cart } = useContext(Context)
-   const [subTotal, setSubTotal] = useState(0)
+    const [subTotal, setSubTotal] = useState(0)
     const [totalPrice, setTotalPrice] = useState(0)
     const [totalDiscount, setTotalDiscount] = useState(0)
 
@@ -18,7 +18,7 @@ const CartBar = () => {
         cart?.items.forEach((item) => {
             const itemBasePrice = item.price * item.quantity
             const itemDiscountAmount = (itemBasePrice * (item.discount || 0)) / 100
-            
+
             tempSubTotal += itemBasePrice
             tempDiscount += itemDiscountAmount
         })
@@ -29,7 +29,7 @@ const CartBar = () => {
     }, [cart])
 
     return (
-        <div className={`${!cartBar ? 'translate-x-full' : 'translate-x-0'} z-50 transform ease-in-out duration-500 w-full sm:w-100 fixed top-16 right-0 bg-white border border-black/20 shadow-xl h-screen overflow-y-scroll flex flex-col items-center p-4`}>
+        <div className={`${!cartBar ? 'translate-x-full' : 'translate-x-0'} z-40 transform ease-in-out duration-500 w-full sm:w-100 fixed top-16 right-0 bg-white border border-black/20 shadow-xl h-screen overflow-y-scroll flex flex-col items-center p-4 pb-28`}>
             {
                 cart?.items.length === 0 ? <div className='w-full flex flex-col items-center gap-7 '>
                     <p>No Item Found</p>
@@ -38,8 +38,9 @@ const CartBar = () => {
                     <div className=' w-full flex flex-col items-center justify-between gap-10'>
                         <div className='w-full flex items-center flex-col gap-4'>
                             <button className='w-full border border-black/20 rounded-2xl cursor-pointer' onClick={() => setCartBar(!cartBar)}>Close</button>
-                            <div className='w-full flex flex-col items-center justify-between gap-4'>
-                                <h1 className='text-2xl font-semibold'>Items</h1>
+
+                            <h1 className='text-2xl font-semibold'>Items</h1>
+                            <div className='w-full flex flex-col items-center justify-between gap-4 min-h-[90vh]'>
                                 <div className='w-full flex flex-col items-center gap-2'>
                                     {
                                         cart?.items.length > 0 && cart?.items.map((item) => (
@@ -60,7 +61,7 @@ const CartBar = () => {
                                         ))
                                     }
                                 </div>
-                                <div className='bg-slate-700 text-white p-2 rounded-lg w-full flex flex-col gap-3 font-mono'>
+                                <div className='bg-slate-700 text-white p-2 rounded-lg w-full flex flex-col gap-3 font-mono text-xs sm:text-base'>
                                     <div className='w-full flex flex-row items-center justify-between '>
                                         <p>SubTotal</p>
                                         <p>{subTotal}</p>

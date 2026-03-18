@@ -7,7 +7,7 @@ export default function ToastProvider({ children }) {
   return (
     <>
       {children}
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer position="bottom-left" autoClose={3000} />
     </>
   );
 }

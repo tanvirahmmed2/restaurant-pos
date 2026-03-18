@@ -55,6 +55,7 @@ const Navbar = () => {
             </div> : <Link href={'/login'} onClick={()=>setCartBar(false)}>Login</Link>
           }
         </div>
+        
         <button onClick={() => setIsSidebar(!isSidebar)} className='text-xl block md:hidden'>
           {
             isSidebar ? <RxCross2 /> :

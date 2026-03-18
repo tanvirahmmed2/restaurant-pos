@@ -31,7 +31,7 @@ const Review = () => {
     if (!reviews || reviews.length === 0) return null
 
     return (
-        <section className='w-full py-16 bg-slate-200 overflow-hidden'>
+        <section className='w-full py-16 bg-slate-300 overflow-hidden'>
             <div className='max-w-4xl mx-auto px-6 text-center'>
                 <h2 className='text-3xl font-bold text-slate-800 mb-2'>Guest Experiences</h2>
                 <div className='w-20 h-1 bg-black mx-auto mb-10 rounded-full' />
@@ -64,7 +64,6 @@ const Review = () => {
                     </AnimatePresence>
                 </div>
 
-                {/* Navigation Dots */}
                 <div className='flex justify-center gap-3 mt-8'>
                     {reviews.map((_, i) => (
                         <button

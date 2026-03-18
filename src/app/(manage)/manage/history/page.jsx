@@ -5,12 +5,12 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 
-const PendingOrder = () => {
+const DeliveredOrder = () => {
   const [orders, setOrders] = useState([])
 
   const fethcOrders = async () => {
     try {
-      const res = await axios.get('/api/order/pending', { withCredentials: true })
+      const res = await axios.get('/api/order', { withCredentials: true })
       setOrders(res.data.payload)
     } catch (error) {
       setOrders([])
@@ -20,33 +20,23 @@ const PendingOrder = () => {
 
   useEffect(() => { fethcOrders() }, [])
 
-  const handleCancel = async (id) => {
+  const handleDelete = async (id) => {
     const confirm = window.confirm('Are your sure?')
     if (!confirm) return
     try {
-      const res = await axios.post('/api/order/cancel', { id }, { withCredentials: true })
+      const res = await axios.delete('/api/order',  {data:{ id }, withCredentials: true })
       toast.success(res.data.message)
       fethcOrders()
     } catch (error) {
       toast.error(error?.response?.data?.message || "Failed to cancel order")
     }
   }
-  const handleConfirm = async (id) => {
-    const confirm = window.confirm('Are your sure?')
-    if (!confirm) return
-    try {
-      const res = await axios.post('/api/order/confirm', { id }, { withCredentials: true })
-      toast.success(res.data.message)
-      fethcOrders()
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Failed to deliver order")
-    }
-  }
+  
   return (
     <div className='w-full flex flex-col items-center gap-4 min-h-screen'>
       {
-        orders.length === 0 ? <p>No order to confirm</p> : <div className='w-full flex flex-col items-center gap-4'>
-          <h1 className='w-full text-center text-base md:text-xl font-semibold'>Waiting orders to be confirmed</h1>
+        orders.length === 0 ? <p>No delivered order found</p> : <div className='w-full flex flex-col items-center gap-4'>
+          <h1 className='w-full text-center text-base md:text-xl font-semibold'>Delivered orders</h1>
           <div className='w-full grid grid-cols-1 md:grid-cols-2 gap-4'>
             {
               orders.map((order) => (
@@ -74,10 +64,10 @@ const PendingOrder = () => {
                     </div>
                   </div>
                   <div className='w-full flex flex-row items-center justify-between gap-2'>
-                    <button className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer' onClick={() => handleCancel(order._id)}>Cancel</button>
+                    <button className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer' onClick={() => handleDelete(order._id)}>Delete</button>
                     <Link href={`/manage/order/${order._id}`} className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer'>Preview</Link>
                     <button className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer' onClick={() => generateReceipt(order)}>Print</button>
-                    <button className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer' onClick={() => handleConfirm(order._id)}>Confirm</button>
+                    
                   </div>
 
                 </div>
@@ -91,4 +81,4 @@ const PendingOrder = () => {
   )
 }
 
-export default PendingOrder
+export default DeliveredOrder

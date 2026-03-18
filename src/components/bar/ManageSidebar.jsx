@@ -58,10 +58,13 @@ const ManageSidebar = () => {
           </Link>
 
           <Link href="/manage/delivery" className={linkStyle('/manage/delivery')}>
-            <MdOutlineLocalOffer />Delivery
+            <MdOutlineLocalOffer />Confirmed
           </Link>
 
           <Link href="/manage/orders" className={linkStyle('/manage/orders')}>
+            <FaHistory /> Delivered
+          </Link>
+          <Link href="/manage/history" className={linkStyle('/manage/history')}>
             <FaHistory /> History
           </Link>
         </div>

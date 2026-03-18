@@ -11,7 +11,7 @@ import axios from 'axios'
 import { Context } from '../context/Context'
 
 const Navbar = () => {
-  const { siteData } = useContext(Context)
+  const { siteData,cartBar, setCartBar } = useContext(Context)
   const [isSidebar, setIsSidebar] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const [role, setRole] = useState('')
@@ -42,17 +42,17 @@ const Navbar = () => {
 
         </div>
         <div className='w-auto h-full hidden md:flex flex-row items-center justify-center gap-6 text-xl'>
-          <Link href={'/'}>Home</Link>
-          <Link href={'/menu'}>Menu</Link>
-          <Link href={'/reservation'}>Book</Link>
+          <Link href={'/'} onClick={()=>setCartBar(false)}>Home</Link>
+          <Link href={'/menu'} onClick={()=>setCartBar(false)}>Menu</Link>
+          <Link href={'/reservation'} onClick={()=>setCartBar(false)}>Book</Link>
+          <button className='hover:opacity-70 cursor-pointer' onClick={()=>setCartBar(!cartBar)} >Cart</button>
           {role === 'manager' && <Link href={'/manage'}>Manage</Link>}
           {role === 'sales' && <Link href={'/sales'}>Sales</Link>}
           {
             isLogin ? <div className='w-auto h-full flex flex-row items-center justify-center gap-2'>
-              <Link href={'/cart'}>Cart</Link>
               <Logout />
               <Profile />
-            </div> : <Link href={'/login'}>Login</Link>
+            </div> : <Link href={'/login'} onClick={()=>setCartBar(false)}>Login</Link>
           }
         </div>
         <button onClick={() => setIsSidebar(!isSidebar)} className='text-xl block md:hidden'>

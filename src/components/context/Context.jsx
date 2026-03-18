@@ -2,10 +2,13 @@
 'use client'
 import { createContext, useContext, useState, useEffect } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 export const Context = createContext()
 
 export const ContextProvider = ({ children }) => {
+  
+  const [hydrated, setHydrated] = useState(false)
   const [cart, setCart] = useState({ items: [] })
   const [siteData, setSiteData] = useState(null)
   const [userData, setUserData] = useState(null)
@@ -71,8 +74,108 @@ export const ContextProvider = ({ children }) => {
     }
   }
 
+ 
+  const fetchCart = () => {
+    if (typeof window === 'undefined') return
+    const storedCart = localStorage.getItem('cart')
+
+    if (!storedCart || storedCart === 'undefined') {
+      setCart({ items: [] })
+      setHydrated(true)
+      return
+    }
+
+    try {
+      const parsed = JSON.parse(storedCart)
+      if (parsed && Array.isArray(parsed.items)) {
+        setCart(parsed)
+      } else {
+        setCart({ items: [] })
+      }
+    } catch (err) {
+      localStorage.removeItem('cart')
+      setCart({ items: [] })
+    }
+    setHydrated(true)
+  }
+
   useEffect(() => {
+    if (typeof window !== 'undefined' && hydrated) {
+      localStorage.setItem('cart', JSON.stringify(cart))
+    }
+  }, [cart, hydrated])
+
+  const addToCart = (product) => {
+    if (!product?._id) return;
+
+   
+
+    const existingInCart = cart.items.find(item => item._id === product._id);
+
+    if (existingInCart) {
+      
+
+      setCart((prev) => ({
+        ...prev,
+        items: prev.items.map(item =>
+          item._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      }));
+      toast.info("Quantity increased");
+    } else {
+      const price = parseFloat(product?.price) || 0;
+      const discount = parseFloat(product?.discount) || 0;
+
+      setCart((prev) => ({
+        ...prev,
+        items: [
+          ...prev.items,
+          {
+            product_id: product._id,
+            name: product.name,
+            quantity: 1,
+            price: price,
+            discount: discount,
+          }
+        ]
+      }));
+      toast.success("Added to cart");
+    }
+  };
+  const removeFromCart = (id) => {
+    setCart(prev => ({ ...prev, items: prev.items.filter(item => item._id !== id) }))
+  }
+
+  const decreaseQuantity = (id) => {
+    setCart((prev) => {
+      const existing = prev.items.find(item => item._id === id)
+      if (!existing) return prev
+      if (existing.quantity > 1) {
+        return {
+          ...prev,
+          items: prev.items.map(item =>
+            item._id === id ? { ...item, quantity: item.quantity - 1 } : item
+          )
+        }
+      }
+      return { ...prev, items: prev.items.filter(item => item._id !== id) }
+    })
+  }
+
+  const clearCart = () => {
+    setCart({ items: [] });
+    if (typeof window !== 'undefined') localStorage.removeItem('cart');
+    toast.success("Cart cleared");
+  };
+
+
+
+
+   useEffect(() => {
     fetchCategories()
+    fetchCart()
   }, [])
 
 
@@ -80,8 +183,8 @@ export const ContextProvider = ({ children }) => {
   const contextValue = {
     manageSidebar, setManageSidebar,
     cart, siteData, userData, staffData,
-    categories,
-    fetchCategories,
+    categories,cart,
+    fetchCategories, addToCart, removeFromCart, decreaseQuantity, clearCart, fetchCart
   }
 
   return (

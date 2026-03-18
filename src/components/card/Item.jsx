@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 const Item = ({item}) => {
   return (
-    <motion.div initial={{opacity:0, scale:0.8}} whileInView={{opacity:1, scale:1}} transition={{duration:0.5}} className='w-full flex flex-col items-center justify-between gap-1 bg-white shadow overflow-hidden p-4 rounded-lg'>
+    <motion.div initial={{opacity:0, scale:0.8}} whileInView={{opacity:1, scale:1}} transition={{duration:0.5}} className='w-full flex flex-col items-center justify-between gap-1 bg-white shadow overflow-hidden p-1 sm:p-2 rounded-lg'>
       <div className='w-full overflow-hidden'>
         <Image src={item.image} alt={item.title} width={1000} height={1000} className='w-full aspect-square object-cover overflow-hidden rounded-lg hover:scale-[1.01] transform ease-in-out duration-500'/>
       </div>

@@ -75,100 +75,103 @@ export const ContextProvider = ({ children }) => {
   }
 
  
-  const fetchCart = () => {
-    if (typeof window === 'undefined') return
-    const storedCart = localStorage.getItem('cart')
+ const fetchCart = () => {
+  if (typeof window === 'undefined') return
+  const storedCart = localStorage.getItem('cart')
 
-    if (!storedCart || storedCart === 'undefined') {
-      setCart({ items: [] })
-      setHydrated(true)
-      return
-    }
-
-    try {
-      const parsed = JSON.parse(storedCart)
-      if (parsed && Array.isArray(parsed.items)) {
-        setCart(parsed)
-      } else {
-        setCart({ items: [] })
-      }
-    } catch (err) {
-      localStorage.removeItem('cart')
-      setCart({ items: [] })
-    }
+  if (!storedCart || storedCart === 'undefined') {
+    setCart({ items: [] })
     setHydrated(true)
+    return
   }
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && hydrated) {
-      localStorage.setItem('cart', JSON.stringify(cart))
+  try {
+    const parsed = JSON.parse(storedCart)
+    if (parsed && Array.isArray(parsed.items)) {
+      setCart(parsed)
+    } else {
+      setCart({ items: [] })
     }
-  }, [cart, hydrated])
+  } catch (err) {
+    localStorage.removeItem('cart')
+    setCart({ items: [] })
+  }
+  setHydrated(true)
+}
 
-  const addToCart = (product) => {
-    if (!product?._id) return;
+useEffect(() => {
+  if (typeof window !== 'undefined' && hydrated) {
+    localStorage.setItem('cart', JSON.stringify(cart))
+  }
+}, [cart, hydrated])
 
-   
+const addToCart = (product) => {
+  if (!product?._id) return;
 
-    const existingInCart = cart.items.find(item => item._id === product._id);
+  const existingInCart = cart.items.find(item => item._id === product._id);
 
-    if (existingInCart) {
-      
+  if (existingInCart) {
+    setCart((prev) => ({
+      ...prev,
+      items: prev.items.map(item =>
+        item._id === product._id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    }));
+    toast.info("Quantity increased");
+  } else {
+    const price = parseFloat(product?.price) || 0;
+    const discount = parseFloat(product?.discount) || 0;
 
-      setCart((prev) => ({
+    setCart((prev) => ({
+      ...prev,
+      items: [
+        ...prev.items,
+        {
+          _id: product._id, 
+          title: product.title,
+          quantity: 1,
+          price: price,
+          discount: discount,
+          image: product.image
+        }
+      ]
+    }));
+    toast.success("Added to cart");
+  }
+};
+
+const removeFromCart = (id) => {
+  setCart(prev => ({ 
+    ...prev, 
+    items: prev.items.filter(item => item._id !== id) 
+  }))
+  toast.error("Removed from cart");
+}
+
+const decreaseQuantity = (id) => {
+  setCart((prev) => {
+    const existing = prev.items.find(item => item._id === id)
+    if (!existing) return prev
+    
+    if (existing.quantity > 1) {
+      return {
         ...prev,
         items: prev.items.map(item =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+          item._id === id ? { ...item, quantity: item.quantity - 1 } : item
         )
-      }));
-      toast.info("Quantity increased");
-    } else {
-      const price = parseFloat(product?.price) || 0;
-      const discount = parseFloat(product?.discount) || 0;
-
-      setCart((prev) => ({
-        ...prev,
-        items: [
-          ...prev.items,
-          {
-            product_id: product._id,
-            name: product.name,
-            quantity: 1,
-            price: price,
-            discount: discount,
-          }
-        ]
-      }));
-      toast.success("Added to cart");
-    }
-  };
-  const removeFromCart = (id) => {
-    setCart(prev => ({ ...prev, items: prev.items.filter(item => item._id !== id) }))
-  }
-
-  const decreaseQuantity = (id) => {
-    setCart((prev) => {
-      const existing = prev.items.find(item => item._id === id)
-      if (!existing) return prev
-      if (existing.quantity > 1) {
-        return {
-          ...prev,
-          items: prev.items.map(item =>
-            item._id === id ? { ...item, quantity: item.quantity - 1 } : item
-          )
-        }
       }
-      return { ...prev, items: prev.items.filter(item => item._id !== id) }
-    })
-  }
+    }
+    return { ...prev, items: prev.items.filter(item => item._id !== id) }
+  })
+}
 
-  const clearCart = () => {
-    setCart({ items: [] });
-    if (typeof window !== 'undefined') localStorage.removeItem('cart');
-    toast.success("Cart cleared");
-  };
+const clearCart = () => {
+  setCart({ items: [] });
+  if (typeof window !== 'undefined') localStorage.removeItem('cart');
+  toast.success("Cart cleared");
+};
 
 
 

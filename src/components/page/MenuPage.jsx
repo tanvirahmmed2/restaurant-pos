@@ -8,9 +8,9 @@ import { useEffect, useState, useMemo, useContext } from "react"
 
 
 
-const Menu = () => {
+const MenuPage = () => {
   const [products, setProducts] = useState([])
-  const{categories}= useContext(Context)
+  const{categories, addToCart}= useContext(Context)
   const [categoryId, setCategoryId]= useState('')
 
   useEffect(() => {
@@ -48,13 +48,13 @@ const Menu = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 mt-8 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-8 w-full">
           {products.length > 0 ? (
             products.map((item) => (
 
-              <Link key={item._id} href={`/menu/${item.slug}`} className="w-full">
+              <div key={item._id} className="w-full cursor-pointer" onClick={()=>addToCart(item)}>
                 <Item item={item}/>
-              </Link>
+              </div>
             ))
           ) : (
             <p className="col-span-full text-center text-gray-400">No items found in this category.</p>
@@ -65,4 +65,4 @@ const Menu = () => {
   )
 }
 
-export default Menu
+export default MenuPage

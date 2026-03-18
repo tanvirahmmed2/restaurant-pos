@@ -1,145 +1,162 @@
 'use client'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import RemoveFromCart from '../buttons/RemoveFromCart'
-import { useCart } from '../context/Context'
+import React, { useContext, useEffect, useState } from 'react'
+import { Context } from '../context/Context'
 import { toast } from 'react-toastify'
+import axios from 'axios'
+import Image from 'next/image'
+import { MdDeleteOutline } from 'react-icons/md'
 
-const Orderform = ({ cartItems }) => {
-    const { fetchCart } = useCart()
-    const [data, setData] = useState({
-        name: 'Guest',
-        phone: '+880-1',
-        delivery: 'dinein',
-        table: 1,
-        discount: 0,
-        tax: 0,
-        totlePrice: 0,
-        payment: 'cash'
+const payment=[
+    'bKash', 'Card', 'Nagad, Rocket', 'Cash'
+]
+const delivery=[
+    'takeaway', 'takein'
+]
+
+const Orderform = () => {
+    const { addToCart, removeFromCart, decreaseQuantity, clearCart, fetchCart, cart } = useContext(Context)
+
+    const [subTotal, setSubTotal] = useState(0)
+    const [totalPrice, setTotalPrice] = useState(0)
+    const [totalDiscount, setTotalDiscount] = useState(0)
+    const [formData, setFormData] = useState({
+        phone: '',
+        paymentMethod: 'Cash',
+        subTotal: subTotal,
+        totalDiscount: totalDiscount,
+        totalPrice: totalPrice,
+        deliveryMethod: 'takein',
+        items: cart?.items || []
+
     })
 
-    const [totals, setTotals] = useState({
-        subTotal: 0,
-        discount: 0,
-        tax: 0,
-        totlePrice: 0
-    })
+
+    const [popUp, setPopUp]= useState(false)
 
     useEffect(() => {
-        let subTotal = 0
-        for (let i = 0; i < cartItems.length; i++) {
-            subTotal += cartItems[i].price
-        }
-        const discountRate = 0 
-        const discount = subTotal * discountRate
-        const taxRate = 0.02
-        const tax = (subTotal - discount) * taxRate
-        const totlePrice = subTotal - discount + tax
+        let tempSubTotal = 0
+        let tempTotalPrice = 0
 
-        setTotals({ subTotal, discount, tax, totlePrice })
-    }, [cartItems])
+        cart?.items.forEach((item) => {
+            tempSubTotal += item.price * item.quantity
+            tempTotalPrice += item.salePrice
+        })
+
+        setSubTotal(tempSubTotal)
+        setTotalPrice(tempTotalPrice)
+        setTotalDiscount(tempSubTotal - tempTotalPrice)
+    }, [cart])
 
     const handleChange = (e) => {
         const { name, value } = e.target
-        setData(prev => ({ ...prev, [name]: value }))
+        setFormData((prev) => ({ ...prev, [name]: value }))
     }
 
-    const handleMethodChange = (method) => {
-        setData(prev => ({ ...prev, delivery: method }))
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const orderData = {
-        ...data,
-        items: cartItems, 
-        subTotal: totals.subTotal,
-        tax: totals.tax,
-        discount: totals.discount,
-        totalPrice: totals.totlePrice, 
-        paymentMethod: data.payment
-    };
+        try {
+            const res = await axios.post('/api/order', formData, { withCredentials: true })
+            toast.success(res.data.message)
+            e.target.reset()
+        } catch (error) {
+            toast.error(error?.response?.data?.message || 'Failed to place order')
 
-    try {
-        const response = await axios.post('/api/order', orderData, { withCredentials: true });
-        toast.success(response.data.message);
-        fetchCart()
-    } catch (error) {
-        console.log(error)
-        toast.error(error?.response?.data?.message || "Something went wrong");
-    }
+        }
     }
 
     return (
-        <form onSubmit={handleSubmit} className='w-full flex flex-col items-center justify-between gap-6 text-sm'>
-           
-            <div className='w-full flex flex-col items-center justify-center gap-2'>
-                <div className="flex flex-row items-center justify-between w-full">
-                    <p onClick={() => handleMethodChange('dinein')} className={`cursor-pointer px-4 py-1 rounded-full border ${data.delivery === 'dinein' ? 'bg-black text-white' : 'border-gray-300'}`} > Dine In </p>
-                    <p onClick={() => handleMethodChange('takeout')} className={`cursor-pointer px-4 py-1 rounded-full border ${data.delivery === 'takeout' ? 'bg-black text-white' : 'border-gray-300'}`} > Take Out </p>
-                </div>
-                <div className='w-full flex flex-row items-center justify-between'>
-                    <label htmlFor="name">Name</label>
-                    <input type="text" id='name' name='name' value={data.name} onChange={handleChange} className='px-3 border-2 border-black/10 rounded-lg outline-none' />
-                </div>
-                <div className='w-full flex flex-row items-center justify-between'>
-                    <label htmlFor="phone">Phone</label>
-                    <input type="text" id='phone' name='phone' value={data.phone} onChange={handleChange}  className='px-3 border-2 border-black/10 rounded-lg outline-none' />
-                </div>
-                {data.delivery === 'dinein' &&
-                    <div className='w-full flex flex-row items-center justify-between'>
-                        <label htmlFor="table">Table</label>
-                        <input type="number" id='table' name='table' value={data.table} min={1} onChange={handleChange} className='px-3 border-2 border-black/10 rounded-lg outline-none' />
-                    </div>
-                }
-                <div className='w-full flex flex-row items-center justify-between'>
-                    <label htmlFor="payment">Payment</label>
-                    <select name="payment" id="payment" value={data.payment} onChange={handleChange}  className='px-3 border-2 border-black/10 rounded-lg outline-none'>
-                        <option value="cash">cash</option>
-                        <option value="card">Card</option>
-                        <option value="online">Online</option>
-                    </select>
-                </div>
+        <form onSubmit={handleSubmit} className='w-full flex flex-col items-center gap-4 relative'>
+            <div className='w-full flex flex-col gap-1'>
+                <label htmlFor="phone">Phone</label>
+                <input type="text" name='phone' id='phone' onChange={handleChange} value={formData.phone} className='w-full px-3 p-1 border border-black/20 outline-none placeholder:italic' placeholder='Customer contact number' />
             </div>
-
-
-            {cartItems.length > 0 && cartItems.map(item => (
-                <div key={item.productId} className='w-full grid-cols-2 grid border border-black/10 p-1 rounded-lg gap-2'>
-                    <p className='text-xs'>{item.title}</p>
-                    <div className='w-full flex flex-row items-center justify-between px-2'>
-                        <p>{item.quantity}</p>
-                        <p>{item.price}</p>
-                        <RemoveFromCart
-                            productId={item.productId}
-                            onRemove={fetchCart} 
-                        />
-                    </div>
-                </div>
-            ))}
-
-           
-            <div className='w-full flex flex-col gap-6 items-center justify-center'>
-                <div className='w-full flex flex-col gap-2 border-b-2 border-black/10 items-center justify-center'>
-                    <div className='w-full flex flex-row items-center justify-between'>
-                        <p>Sub Total</p>
-                        <p>{totals.subTotal.toFixed(2)}</p>
-                    </div>
-                    <div className='w-full flex flex-row items-center justify-between'>
-                        <p>Discount</p>
-                        <p>{totals.discount.toFixed(2)}</p>
-                    </div>
-                    <div className='w-full flex flex-row items-center justify-between'>
-                        <p>Tax</p>
-                        <p>{totals.tax.toFixed(2)}</p>
-                    </div>
-                </div>
-                <div className='w-full flex flex-row items-center justify-between'>
-                    <p>Total</p>
-                    <p>{totals.totlePrice.toFixed(2)}</p>
-                </div>
+            <div className='w-full grid grid-cols-9 text-xs justify-items-center gap-1 border p-1 border-black/20'>
+                <p className='col-span-1'>Image</p>
+                <p className='col-span-3'>Title</p>
+                <p className='col-span-1'>Quantity</p>
+                <p className='col-span-1'>Price</p>
+                <p className='col-span-1'>Discount</p>
+                <p className='col-span-1'>Total Price</p>
+                <p className='col-span-1'>Remove</p>
             </div>
+            {
+                cart?.items.length > 0 ? <div className='w-full flex flex-col items-center gap-4 '>
 
-            <button className='bg-black text-white p-1 px-4 rounded-2xl cursor-pointer' type='submit'>Place order</button>
+                    {
+                        cart.items.map((item) => (
+                            <div key={item._id} className='w-full grid grid-cols-9  justify-items-center gap-1 even:bg-slate-100'>
+                                <div className='col-span-1 w-full aspect-square overflow-hidden'>
+                                    <Image src={item.image} alt='item image' width={50} height={50} className='w-full aspect-square object-cover overflow-hidden' />
+                                </div>
+                                <p className='col-span-3 flex items-center justify-center'>{item.title}</p>
+                                <div className='col-span-1  flex flex-row items-center justify-between w-full'>
+                                    <button className='bg-green-500 px-2 rounded-full text-white cursor-pointer' type='button' onClick={() => addToCart(item)}>+</button>
+                                    <p>{item.quantity}</p>
+                                    <button className='bg-green-500 px-2 rounded-full text-white cursor-pointer' type='button' onClick={() => decreaseQuantity(item._id)}>-</button>
+                                </div>
+                                <p className='col-span-1 flex items-center justify-center'>{item.price}</p>
+                                <p className='col-span-1 flex items-center justify-center'>{item.discount}</p>
+                                <p className='col-span-1 flex items-center justify-center'>{item.salePrice}</p>
+                                <button className='col-span-1 flex items-center justify-center text-xl cursor-pointer' onClick={() => removeFromCart(item._id)}><MdDeleteOutline /></button>
+                            </div>
+                        ))
+                    }
+                    <div className='bg-slate-700 text-white p-2 rounded-lg w-full flex flex-col gap-3 font-mono text-xs sm:text-base'>
+                        <div className='w-full flex flex-row items-center justify-between '>
+                            <p>SubTotal</p>
+                            <p>{subTotal}</p>
+                        </div>
+                        <div className='w-full flex flex-row items-center justify-between '>
+                            <p>Discount</p>
+                            <p>{totalDiscount}</p>
+                        </div>
+                        <div className='w-full flex flex-row items-center justify-between text-2xl font-semibold'>
+                            <p>Total Price</p>
+                            <p>{totalPrice}</p>
+                        </div>
+                        <button className='w-full p-1 bg-white rounded-lg cursor-pointer text-black' type='button' onClick={()=>setPopUp(true)}>Next</button>
+                    </div>
+                    <button type='button' className='px-5 p-1 bg-slate-700 cursor-pointer text-white rounded-2xl' onClick={() => clearCart()}>Clear</button>
+
+                </div> : <p>Please add an item</p>
+            }
+            {
+                popUp && <div className='flex items-center justify-center fixed inset-0 backdrop-blur-8 bg-black/40 z-50'>
+                    <div className='w-auto mx-auto flex flex-col items-center justify-center p-4 gap-4 bg-white rounded-xl'>
+                        <div className='w-full flex flex-row min-w-70 items-center justify-between text-xl font-semibold'>
+                            <p>Total Price</p>
+                            <p>{totalPrice}</p>
+                        </div>
+                        <div className='w-full flex flex-col gap-1'>
+                            <label htmlFor="paymentMethod">Payment Method</label>
+                            <select name="paymentMethod" id="paymentMethod" onChange={handleChange} required value={formData.paymentMethod} className='w-full px-3 p-1 border border-black/20 outline-none'>
+                                <option value="">Select</option>
+                                {
+                                    payment.map((p)=>(
+                                        <option value={p} key={p}>{p}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className='w-full flex flex-col gap-1'>
+                            <label htmlFor="deliveryMethod">Delivery</label>
+                            <select name="deliveryMethod" id="deliveryMethod" onChange={handleChange} required value={formData.deliveryMethod} className='w-full px-3 p-1 border border-black/20 outline-none'>
+                                <option value="">Select</option>
+                                {
+                                    delivery.map((d)=>(
+                                        <option value={d} key={d}>{d}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+                        <div className='w-full flex flex-row items-center justify-center gap-2'>
+                            <button className='w-full border border-slate-700/20 rounde-lg cursor-pointer p-1 ' type='button' onClick={()=>setPopUp(false)}>Back</button>
+                            <button className='w-full bg-slate-600 cursor-pointer rounde-lg p-1 text-white' type='submit'>Confirm</button>
+                        </div>
+                    </div>
+                </div>
+            }
         </form>
     )
 }

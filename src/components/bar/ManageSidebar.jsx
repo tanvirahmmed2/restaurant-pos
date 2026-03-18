@@ -8,7 +8,7 @@ import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { PiFinnTheHumanLight } from "react-icons/pi";
 import { FaHistory, FaRegEdit } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
-import { MdManageAccounts, MdOutlineLocalOffer } from "react-icons/md";
+import { MdManageAccounts, MdOutlineLocalOffer, MdSell } from "react-icons/md";
 import { SiGoogleanalytics } from "react-icons/si";
 import { FaRegMessage } from "react-icons/fa6";
 import { RiGlobalLine } from "react-icons/ri";
@@ -50,8 +50,11 @@ const ManageSidebar = () => {
             <IoHomeOutline /> Home
           </Link>
 
+          <Link href="/manage/sale" className={linkStyle('/manage/sale')}>
+            <MdSell /> Sale
+          </Link>
           <Link href="/manage/orders" className={linkStyle('/manage/orders')}>
-            <AiOutlineUnorderedList /> Orders
+            <AiOutlineUnorderedList /> Pending
           </Link>
 
           <Link href="/manage/offers" className={linkStyle('/manage/offers')}>

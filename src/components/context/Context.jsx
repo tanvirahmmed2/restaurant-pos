@@ -113,11 +113,17 @@ const addToCart = (product) => {
   if (existingInCart) {
     setCart((prev) => ({
       ...prev,
-      items: prev.items.map(item =>
-        item._id === product._id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
+      items: prev.items.map(item => {
+        if (item._id === product._id) {
+          const newQty = item.quantity + 1;
+          return { 
+            ...item, 
+            quantity: newQty,
+            salePrice: (item.price - item.discount) * newQty 
+          };
+        }
+        return item;
+      })
     }));
     toast.info("Quantity increased");
   } else {
@@ -129,12 +135,13 @@ const addToCart = (product) => {
       items: [
         ...prev.items,
         {
-          _id: product._id, 
+          _id: product._id,
           title: product.title,
           quantity: 1,
           price: price,
           discount: discount,
-          image: product.image
+          image: product.image,
+          salePrice: (price - discount), 
         }
       ]
     }));
@@ -152,29 +159,34 @@ const removeFromCart = (id) => {
 
 const decreaseQuantity = (id) => {
   setCart((prev) => {
-    const existing = prev.items.find(item => item._id === id)
-    if (!existing) return prev
-    
+    const existing = prev.items.find(item => item._id === id);
+    if (!existing) return prev;
+
     if (existing.quantity > 1) {
       return {
         ...prev,
-        items: prev.items.map(item =>
-          item._id === id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-      }
+        items: prev.items.map(item => {
+          if (item._id === id) {
+            const newQty = item.quantity - 1;
+            return { 
+              ...item, 
+              quantity: newQty,
+              salePrice: (item.price - item.discount) * newQty 
+            };
+          }
+          return item;
+        })
+      };
     }
-    return { ...prev, items: prev.items.filter(item => item._id !== id) }
-  })
-}
+    return { ...prev, items: prev.items.filter(item => item._id !== id) };
+  });
+};
 
 const clearCart = () => {
   setCart({ items: [] });
   if (typeof window !== 'undefined') localStorage.removeItem('cart');
   toast.success("Cart cleared");
 };
-
-
-
 
    useEffect(() => {
     fetchCategories()

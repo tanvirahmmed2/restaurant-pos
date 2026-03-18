@@ -7,26 +7,23 @@ import { MdDeleteOutline } from 'react-icons/md'
 
 const CartBar = () => {
     const { cartBar, setCartBar, addToCart, removeFromCart, decreaseQuantity, clearCart, fetchCart, cart } = useContext(Context)
-    const [subTotal, setSubTotal] = useState(0)
-    const [totalPrice, setTotalPrice] = useState(0)
-    const [totalDiscount, setTotalDiscount] = useState(0)
+   const [subTotal, setSubTotal] = useState(0)
+const [totalPrice, setTotalPrice] = useState(0)
+const [totalDiscount, setTotalDiscount] = useState(0)
 
-    useEffect(() => {
-        let tempSubTotal = 0
-        let tempDiscount = 0
+useEffect(() => {
+    let tempSubTotal = 0
+    let tempTotalPrice = 0
 
-        cart?.items.forEach((item) => {
-            const itemBasePrice = item.price * item.quantity
-            const itemDiscountAmount = (itemBasePrice * (item.discount || 0)) / 100
+    cart?.items.forEach((item) => {
+        tempSubTotal += item.price * item.quantity
+        tempTotalPrice += item.salePrice
+    })
 
-            tempSubTotal += itemBasePrice
-            tempDiscount += itemDiscountAmount
-        })
-
-        setSubTotal(tempSubTotal)
-        setTotalDiscount(tempDiscount)
-        setTotalPrice(tempSubTotal - tempDiscount)
-    }, [cart])
+    setSubTotal(tempSubTotal)
+    setTotalPrice(tempTotalPrice)
+    setTotalDiscount(tempSubTotal - tempTotalPrice)
+}, [cart])
 
     return (
         <div className={`${!cartBar ? 'translate-x-full' : 'translate-x-0'} z-40 transform ease-in-out duration-500 w-full sm:w-100 fixed top-16 right-0 bg-white border border-black/20 shadow-xl h-screen overflow-y-scroll flex flex-col items-center p-4 pb-28`}>

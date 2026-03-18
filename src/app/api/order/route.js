@@ -3,6 +3,7 @@ import { isLogin } from "@/lib/auth/middleware";
 import Order from "@/lib/models/order";
 import User from "@/lib/models/user";
 import { NextResponse } from "next/server";
+import Customer from "@/lib/models/customer";
 
 
 export async function GET() {
@@ -34,43 +35,79 @@ export async function GET() {
 
 }
 
+
 export async function POST(req) {
     try {
-        await ConnectDB()
-        const auth=await isLogin()
-        if(!auth.success) {
-            return NextResponse.json({ success: false, message: 'Please Login' }, { status: 400 });
+        await ConnectDB();
+        const data = await req.json();
+        
+        const { 
+            phone, 
+            deliveryMethod, 
+            items, 
+            subTotal, 
+            totalDiscount, 
+            totalPrice, 
+            paymentMethod,
+            table,
+            status,
+            transactionId
+        } = data;
 
+        if (!items || items.length === 0) {
+            return NextResponse.json({ success: false, message: "Cart is empty" }, { status: 400 });
         }
 
-        const user= await auth.payload
+        const customerPhone = phone?.trim() || '01900000000';
+        let customerName = 'guest';
+        let existingCustomer = await Customer.findOne({ phone: customerPhone });
 
-        const { name, phone, delivery, items, tabel, subTotal, tax, discount, totalPrice, paymentMethod } = await req.json()
-        if (!delivery || !subTotal || !items || items.length === 0) {
-            return NextResponse.json({ success: false, message: 'Missing order details' }, { status: 400 });
+        if (existingCustomer) {
+            customerName = existingCustomer.name;
+        } else {
+            const newCustomer = new Customer({ phone: customerPhone, name: 'guest' });
+            await newCustomer.save();
         }
 
-        const newOrder = new Order({ name, phone, delivery, items:user.cart, tabel, subTotal, tax, discount, totalPrice, paymentMethod})
+        const orderStatus = status || 'confirmed';
+        const determinedPaymentStatus = orderStatus === 'pending' ? 'unpaid' : 'paid';
 
-        await newOrder.save()
+        const formattedItems = items.map(item => ({
+            productId: item._id, 
+            title: item.title,
+            quantity: item.quantity,
+            price: item.price,
+            discount: item.discount || 0
+        }));
 
-        await User.findByIdAndUpdate(user._id, { $set: { cart: [] } });
+        const newOrder = new Order({
+            name: customerName,
+            phone: customerPhone,
+            items: formattedItems,
+            deliveryMethod: deliveryMethod || 'takein',
+            table: table || 'N/A',
+            subTotal: subTotal || 0,
+            totalDiscount: totalDiscount || 0,
+            totalPrice: totalPrice || 0,
+            paymentMethod: paymentMethod || 'Cash',
+            status: orderStatus,
+            transactionId: transactionId || '',
+            paymentStatus: determinedPaymentStatus 
+        });
+
+        await newOrder.save();
 
         return NextResponse.json({
             success: true,
-            message: 'Successfully placed order',
-        }, { status: 200 })
+            message: `Order placed for ${customerName}`,
+            orderId: newOrder._id
+        }, { status: 200 });
 
     } catch (error) {
-        return NextResponse.json({
-            success: false,
-            message: 'Failed to create order',
-            error: error.message
-        }, { status: 500 })
-
+        return NextResponse.json({ success: false, message: error.message }, { status: 500 });
     }
-
 }
+
 
 export async function DELETE(req) {
     try {

@@ -17,6 +17,7 @@ export async function POST(req) {
             return NextResponse.json({ succes:false, message:'Order not found'}, {status:400})
         }
         order.status='cancelled'
+        order.paymentStatus='unpaid'
 
         await order.save()
 

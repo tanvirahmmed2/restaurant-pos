@@ -53,15 +53,15 @@ const ManageSidebar = () => {
           <Link href="/manage/sale" className={linkStyle('/manage/sale')}>
             <MdSell /> Sale
           </Link>
-          <Link href="/manage/orders" className={linkStyle('/manage/orders')}>
+          <Link href="/manage/pending" className={linkStyle('/manage/pending')}>
             <AiOutlineUnorderedList /> Pending
           </Link>
 
-          <Link href="/manage/offers" className={linkStyle('/manage/offers')}>
-            <MdOutlineLocalOffer /> Offers
+          <Link href="/manage/delivery" className={linkStyle('/manage/delivery')}>
+            <MdOutlineLocalOffer />Delivery
           </Link>
 
-          <Link href="/manage/history" className={linkStyle('/manage/history')}>
+          <Link href="/manage/orders" className={linkStyle('/manage/orders')}>
             <FaHistory /> History
           </Link>
         </div>

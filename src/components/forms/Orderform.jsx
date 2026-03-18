@@ -6,10 +6,10 @@ import axios from 'axios'
 import Image from 'next/image'
 import { MdDeleteOutline } from 'react-icons/md'
 
-const payment=[
-    'bKash', 'Card', 'Nagad, Rocket', 'Cash'
+const payment = [
+    'bkash', 'card', 'nagad, rocket', 'cash'
 ]
-const delivery=[
+const delivery = [
     'takeaway', 'takein'
 ]
 
@@ -21,17 +21,21 @@ const Orderform = () => {
     const [totalDiscount, setTotalDiscount] = useState(0)
     const [formData, setFormData] = useState({
         phone: '',
-        paymentMethod: 'Cash',
+        paymentMethod: 'cash',
         subTotal: subTotal,
         totalDiscount: totalDiscount,
         totalPrice: totalPrice,
         deliveryMethod: 'takein',
-        items: cart?.items || []
+        items: cart?.items || [],
+        paymentStatus: 'paid',
+        transactionId: '',
+        status:'confirmed',
+        table:''
 
     })
 
 
-    const [popUp, setPopUp]= useState(false)
+    const [popUp, setPopUp] = useState(false)
 
     useEffect(() => {
         let tempSubTotal = 0
@@ -54,16 +58,30 @@ const Orderform = () => {
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
-        try {
-            const res = await axios.post('/api/order', formData, { withCredentials: true })
-            toast.success(res.data.message)
-            e.target.reset()
-        } catch (error) {
-            toast.error(error?.response?.data?.message || 'Failed to place order')
+        e.preventDefault();
 
+        const finalOrderData = {
+            ...formData,
+            phone: formData.phone.trim() || '01900000000',
+            subTotal,
+            totalDiscount,
+            totalPrice,
+            items: cart?.items || []
+        };
+
+        if (finalOrderData.items.length === 0) {
+            return toast.error("Cart is empty");
         }
-    }
+
+        try {
+            const res = await axios.post('/api/order', finalOrderData, { withCredentials: true });
+            toast.success(res.data.message);
+            setPopUp(false);
+            clearCart();
+        } catch (error) {
+            toast.error(error?.response?.data?.message || 'Failed to place order');
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit} className='w-full flex flex-col items-center gap-4 relative'>
@@ -115,7 +133,7 @@ const Orderform = () => {
                             <p>Total Price</p>
                             <p>{totalPrice}</p>
                         </div>
-                        <button className='w-full p-1 bg-white rounded-lg cursor-pointer text-black' type='button' onClick={()=>setPopUp(true)}>Next</button>
+                        <button className='w-full p-1 bg-white rounded-lg cursor-pointer text-black' type='button' onClick={() => setPopUp(true)}>Next</button>
                     </div>
                     <button type='button' className='px-5 p-1 bg-slate-700 cursor-pointer text-white rounded-2xl' onClick={() => clearCart()}>Clear</button>
 
@@ -133,7 +151,7 @@ const Orderform = () => {
                             <select name="paymentMethod" id="paymentMethod" onChange={handleChange} required value={formData.paymentMethod} className='w-full px-3 p-1 border border-black/20 outline-none'>
                                 <option value="">Select</option>
                                 {
-                                    payment.map((p)=>(
+                                    payment.map((p) => (
                                         <option value={p} key={p}>{p}</option>
                                     ))
                                 }
@@ -144,14 +162,18 @@ const Orderform = () => {
                             <select name="deliveryMethod" id="deliveryMethod" onChange={handleChange} required value={formData.deliveryMethod} className='w-full px-3 p-1 border border-black/20 outline-none'>
                                 <option value="">Select</option>
                                 {
-                                    delivery.map((d)=>(
+                                    delivery.map((d) => (
                                         <option value={d} key={d}>{d}</option>
                                     ))
                                 }
                             </select>
                         </div>
+                        <div className='w-full flex flex-col gap-1'>
+                            <label htmlFor="table">Table</label>
+                            <input name="table" id="table" onChange={handleChange} value={formData.table} className='w-full px-3 p-1 border border-black/20 outline-none'/>
+                        </div>
                         <div className='w-full flex flex-row items-center justify-center gap-2'>
-                            <button className='w-full border border-slate-700/20 rounde-lg cursor-pointer p-1 ' type='button' onClick={()=>setPopUp(false)}>Back</button>
+                            <button className='w-full border border-slate-700/20 rounde-lg cursor-pointer p-1 ' type='button' onClick={() => setPopUp(false)}>Back</button>
                             <button className='w-full bg-slate-600 cursor-pointer rounde-lg p-1 text-white' type='submit'>Confirm</button>
                         </div>
                     </div>

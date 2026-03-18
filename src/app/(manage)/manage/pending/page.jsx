@@ -2,7 +2,7 @@ import { BASE_URL } from '@/lib/database/secret'
 import React from 'react'
 
 const Orders = async() => {
-  const res= await fetch(`${BASE_URL}/api/order/confirmed`, {method:'GET', cache:'no-store'})
+  const res= await fetch(`${BASE_URL}/api/order/pending`, {method:'GET', cache:'no-store'})
   const data= await res.json()
   if(!data.success) return <p className='w-full text-center p-4'>No running order found</p>
   const orders= data.payload

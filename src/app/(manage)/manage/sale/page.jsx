@@ -4,7 +4,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className='w-full flex flex-col md:flex-row items-center md:items-start justify-center'>
+    <div className='w-full flex flex-col lg:flex-row items-center lg:items-start justify-center'>
         <SalesCart/>
         <MenuPage/>
       

@@ -31,3 +31,37 @@ export async function GET() {
     }
 
 }
+
+
+
+export async function POST(req) {
+    try {
+        await ConnectDB()
+        const {id}= await req.json()
+
+        if(!id){
+            return NextResponse.json({ success: false, message: 'id not found'}, {status:400})
+        }
+
+        const order= await Order.findById(id)
+        if(!order){
+            return NextResponse.json({ succes:false, message:'Order not found'}, {status:400})
+        }
+        order.status='confirmed'
+        order.paymentStatus='paid'
+
+        await order.save()
+
+        return NextResponse.json({ succes: true, message: 'Successfully confirmed order'}, {status:200})
+        
+    } catch (error) {
+        return NextResponse.json({
+            success: false,
+            message:'Failed to deliver order',
+            error: error.message
+        }, {status:500})
+        
+    }
+    
+}
+

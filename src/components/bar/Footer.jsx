@@ -6,7 +6,7 @@ const Footer = () => {
     <div className='w-full p-4 bg-slate-700 text-white border-t-2 border-black/10 flex flex-col items-center justify-center gap-4'>
       <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2'>
         <div className='w-full flex flex-col gap-1'>
-          <h1>Sara's Dine</h1>
+          <h1 className='text-3xl font-black'>Sara's Dine</h1>
           <Link className='opacity-60' href={'/'}>Visit Branch</Link>
 
         </div>

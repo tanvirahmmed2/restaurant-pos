@@ -48,7 +48,7 @@ const Menu = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4 mt-8 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4 mt-8 w-full">
           {products.length > 0 ? (
             products.map((item) => (
 

@@ -7,7 +7,7 @@ import Image from 'next/image'
 import { Context } from '../context/Context'
 
 const FlashSale = () => {
-  const {addToCart}= useContext(Context)
+  const { addToCart } = useContext(Context)
   const [products, setProducts] = useState([])
   useEffect(() => {
     const fetchProduct = async () => {
@@ -29,11 +29,14 @@ const FlashSale = () => {
         products && <div className='w-full flex flex-col items-center justify-center gap-7'>
           {
             products.map((item) => (
-              <motion.div initial={{opacity:0, x:50}} whileInView={{opacity:1, x:0}} transition={{duration:.8}} key={item._id} className='w-full max-w-4xl gap-4 md:gap6 flex flex-row items-center even:flex-row-reverse'>
-                <Link href={`/menu/${item.slug}`} className='w-full aspect-square overflow-hidden p-2 rounded-full shadow'>
-                  <Image src={item.image} alt='image' width={500} height={500} className='w-full aspect-square overflow-hidden object-cover shadow rounded-full' />
-                </Link>
-                <div className='w-full flex flex-col gap-1'>
+              <div key={item._id} className='w-full max-w-4xl gap-4 md:gap6 flex flex-row items-center even:flex-row-reverse'>
+
+                <motion.div initial={{opacity:0, x:-30}} whileInView={{opacity:1, x:0}} transition={{duration:0.9}} className='w-full flex items-center justify-center'>
+                  <Link href={`/menu/${item.slug}`} className='w-full aspect-square overflow-hidden p-2 rounded-full shadow'>
+                    <Image src={item.image} alt='image' width={500} height={500} className='w-full aspect-square overflow-hidden object-cover shadow rounded-full' />
+                  </Link>
+                </motion.div>
+                <motion.div initial={{opacity:0, x:30}} whileInView={{opacity:1, x:0}} transition={{duration:0.9}} className='w-full flex flex-col gap-1'>
                   <p className='font-semibold text-xl'>{item.title}</p>
                   <p className='text-xs'>{item.categoryId.name}</p>
                   <p>{item.description}</p>
@@ -43,9 +46,9 @@ const FlashSale = () => {
                       <p className='font-semibold'>৳{item.price - item.discount}</p>
                     </div> : <p className='font-semibold'>৳{item.price}</p>
                   }
-                  <button onClick={()=>addToCart(item)} className='bg-black text-white p-1 px-5 w-auto rounded-2xl opacity-30 cursor-pointer'>Add To cart</button>
-                </div>
-              </motion.div>
+                  <button onClick={() => addToCart(item)} className='bg-black text-white p-1 px-5 w-auto rounded-2xl opacity-30 cursor-pointer'>Add To cart</button>
+                </motion.div>
+              </div>
             ))
           }
         </div>

@@ -9,17 +9,27 @@ export async function POST(req) {
     try {
         await ConnectDB()
 
-        const { name, email, password } = await req.json()
-        if (!name || !email || !password ) {
+        const { name, email, password ,phone} = await req.json()
+        if (!name || !email || !password || !phone) {
             return NextResponse.json({
                 success: false,
                 message: 'Please fill all information'
             }, { status: 400 })
         }
-
+        if(phone.length!==11){
+            return NextResponse.json({
+                success:false, message:"Please enter a valid phone number"
+            },{status:400})
+        }
+        const findUser= await User.findOne({$or:[{email},{phone}]})
+        if(findUser){
+            return NextResponse.json({
+                success:false, message:" User already exist with this email"
+            },{status: 400})
+        }
         const hashedPass = await bcrypt.hash(password, 10);
 
-        const newUser = await User({ name, email, password: hashedPass })
+        const newUser = await User({ name, email, password: hashedPass, phone })
 
         await newUser.save()
 
@@ -44,8 +54,8 @@ export async function DELETE(req) {
     try {
         await ConnectDB()
 
-        const { id } = await req.json()
-        if (!id) {
+        const { email } = await req.json()
+        if (!email) {
             return NextResponse.json({
                 success: false,
                 message: "User id not found"
@@ -53,7 +63,7 @@ export async function DELETE(req) {
         }
 
         
-        const user = await User.findById(id)
+        const user = await User.findOne({email})
         if (!user) {
             return NextResponse.json({
                 success: false,
@@ -62,7 +72,7 @@ export async function DELETE(req) {
         }
 
 
-        await User.findByIdAndDelete(id)
+        await User.findByIdAndDelete(user._id)
 
         return NextResponse.json({
             success: true,

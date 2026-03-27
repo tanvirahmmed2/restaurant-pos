@@ -13,18 +13,18 @@ const SingleProduct = async ({ params }) => {
 
   if (!product) return (
     <div className="flex justify-center items-center min-h-screen">
-      <p className="text-xl font-medium text-slate-500">No data found</p>
+      <p className="text-xl font-medium text-slate-700">No data found</p>
     </div>
   )
 
   return (
     <div className='w-full min-h-screen bg-slate-50 pb-20'>
-      <div className='w-full bg-slate-500 h-64 relative' />
+      <div className='w-full bg-slate-700 h-64 relative' />
 
       <div className='max-w-5xl mx-auto px-4 -mt-32 relative z-10'>
         <div className='bg-white rounded-3xl shadow-xl overflow-hidden'>
           
-          <div className='flex flex-col w-full '>
+          <div className='flex flex-col w-full relative aspect-square'>
             <div className='w-full aspect-square overflow-hidden relative'>
               <div className='absolute right-4 top-4 z-20'>
                 {product.isAvailable ? (
@@ -46,18 +46,18 @@ const SingleProduct = async ({ params }) => {
               />
             </div>
 
-            <div className='w-full p-8 md:p-12 flex flex-col justify-center gap-6'>
+            <div className='w-full p-2 sm:p-4 md:p-12 bg-white flex flex-col justify-center gap-1'>
               <div>
-                <h1 className='text-3xl md:text-5xl font-extrabold text-slate-900 mb-4'>
+                <h1 className='text-xl md:text-5xl font-extrabold text-slate-900 mb-4'>
                   {product.title}
                 </h1>
-                <p className='text-slate-600 leading-relaxed text-lg'>
+                <p className='text-slate-600 leading-relaxed md:text-lg'>
                   {product.description}
                 </p>
               </div>
 
-              <div className="pt-6 border-t border-slate-100 flex items-center justify-between">
-                <span className="text-4xl font-light text-slate-900">
+              <div className=" border-t border-slate-100 flex items-center justify-between">
+                <span className=" text-lg md:text-4xl font-light text-slate-900">
                   ${product.price}
                 </span>
                 <AddtoCart product={product}/>

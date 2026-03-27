@@ -6,26 +6,8 @@ import Image from 'next/image'
 import { MdDeleteOutline } from 'react-icons/md'
 
 const CartBar = () => {
-    const { cartBar, setCartBar, addToCart, removeFromCart, decreaseQuantity, clearCart, userData, cart } = useContext(Context)
-    const [subTotal, setSubTotal] = useState(0)
-    const [totalPrice, setTotalPrice] = useState(0)
-    const [totalDiscount, setTotalDiscount] = useState(0)
-
-    useEffect(() => {
-        let tempSubTotal = 0
-        let tempTotalPrice = 0
-
-        cart?.items.forEach((item) => {
-            tempSubTotal += item.price * item.quantity
-            tempTotalPrice += item.salePrice
-        })
-
-        setSubTotal(tempSubTotal)
-        setTotalPrice(tempTotalPrice)
-        setTotalDiscount(tempSubTotal - tempTotalPrice)
-    }, [cart])
-
-    const [phone, setPhone]= useState(userData?.phone || '')
+    const { subTotal,  totalPrice,  totalDiscount, cartBar, setCartBar, addToCart, removeFromCart, decreaseQuantity, clearCart, userData, cart } = useContext(Context)
+   
 
     return (
         <div className={`${!cartBar ? 'translate-x-full' : 'translate-x-0'} z-40 transform ease-in-out duration-500 w-full sm:w-100 fixed top-16 right-0 bg-white border border-black/20 shadow-xl h-screen overflow-y-scroll flex flex-col items-center p-4 pb-28`}>
@@ -34,7 +16,7 @@ const CartBar = () => {
                     <p>No Item Found</p>
                     <Link href={'/menu'} className='px-6 p-1 border border-black/20 rounded-2xl' onClick={() => setCartBar(!cartBar)}>Menu</Link>
                 </div> :
-                    <div className=' w-full flex flex-col items-center justify-between gap-10'>
+                    <div className=' w-full relative flex flex-col items-center justify-between gap-10'>
                         <div className='w-full flex items-center flex-col gap-4'>
                             <button className='w-full border border-black/20 rounded-2xl cursor-pointer' onClick={() => setCartBar(!cartBar)}>Close</button>
 
@@ -73,11 +55,12 @@ const CartBar = () => {
                                         <p>Total Price</p>
                                         <p>{totalPrice}</p>
                                     </div>
-                                    <button className='w-full p-1 bg-white rounded-lg cursor-pointer text-black'>Confirm</button>
+                                    <Link href={'/checkout'} className='w-full p-1 bg-white rounded-lg cursor-pointer text-black text-center' onClick={() => setCartBar(!cartBar)}>Checkout</Link>
                                 </div>
                             </div>
                         </div>
                         <button className='px-6 p-1 border border-black/20 rounded-2xl cursor-pointer' onClick={() => clearCart()}>Clear cart</button>
+                        
                     </div>
             }
         </div>

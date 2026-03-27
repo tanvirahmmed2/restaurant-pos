@@ -193,11 +193,29 @@ const clearCart = () => {
     fetchCart()
   }, [])
 
-
-
+   const [subTotal, setSubTotal] = useState(0)
+      const [totalPrice, setTotalPrice] = useState(0)
+      const [totalDiscount, setTotalDiscount] = useState(0)
+      
+  
+      useEffect(() => {
+          let tempSubTotal = 0
+          let tempTotalPrice = 0
+  
+          cart?.items.forEach((item) => {
+              tempSubTotal += item.price * item.quantity
+              tempTotalPrice += item.salePrice
+          })
+  
+          setSubTotal(tempSubTotal)
+          setTotalPrice(tempTotalPrice)
+          setTotalDiscount(tempSubTotal - tempTotalPrice)
+      }, [cart])
+  
+      
   const contextValue = {
     manageSidebar, setManageSidebar, cartBar, setCartBar,
-    cart, siteData, userData, staffData,
+    cart, siteData, userData, staffData, subTotal, setSubTotal, totalPrice, setTotalPrice, totalDiscount, setTotalDiscount,
     categories,cart,
     fetchCategories, addToCart, removeFromCart, decreaseQuantity, clearCart, fetchCart
   }

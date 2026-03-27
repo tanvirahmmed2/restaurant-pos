@@ -52,7 +52,7 @@ const Menu = () => {
           {products.length > 0 ? (
             products.map((item) => (
 
-              <Link key={item._id} href={`/menu/${item.slug}`} className="w-full">
+              <Link key={item._id} href={`/menu/${item.slug}`} className="w-full h-full">
                 <Item item={item}/>
               </Link>
             ))

@@ -11,28 +11,9 @@ import axios from 'axios'
 import { Context } from '../context/Context'
 
 const Navbar = () => {
-  const { siteData,cartBar, setCartBar } = useContext(Context)
+  const { siteData,cartBar, setCartBar, userData, staffData } = useContext(Context)
   const [isSidebar, setIsSidebar] = useState(false)
-  const [isLogin, setIsLogin] = useState(false)
-  const [role, setRole] = useState('')
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('/api/user/islogin', { withCredentials: true })
-        const data = response.data.payload.role
-        setIsLogin(true)
-        setRole(data)
-      } catch (error) {
-        console.log(error)
-        setIsLogin(false)
-        setRole('')
-      }
-
-    }
-
-    fetchUser()
-  }, [])
 
   return (
     <div className='w-full fixed top-0 z-50 right-0'>
@@ -46,10 +27,10 @@ const Navbar = () => {
           <Link href={'/menu'} onClick={()=>setCartBar(false)}>Menu</Link>
           <Link href={'/reservation'} onClick={()=>setCartBar(false)}>Book</Link>
           <button className='hover:opacity-70 cursor-pointer' onClick={()=>setCartBar(!cartBar)} >Cart</button>
-          {role === 'manager' && <Link href={'/manage'}>Manage</Link>}
-          {role === 'sales' && <Link href={'/sales'}>Sales</Link>}
+          {staffData?.role === 'manager' && <Link href={'/manage'}>Manage</Link>}
+          {staffData?.role === 'sales' && <Link href={'/sales'}>Sales</Link>}
           {
-            isLogin ? <div className='w-auto h-full flex flex-row items-center justify-center gap-2'>
+            userData ? <div className='w-auto h-full flex flex-row items-center justify-center gap-2'>
               <Logout />
               <Profile />
             </div> : <Link href={'/login'} onClick={()=>setCartBar(false)}>Login</Link>
@@ -63,7 +44,7 @@ const Navbar = () => {
           }
         </button>
       </div>
-      <Sidebar {...{ isSidebar, setIsSidebar, isLogin, role }} />
+      <Sidebar {...{ isSidebar, setIsSidebar }} />
 
     </div>
   )

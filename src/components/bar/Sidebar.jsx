@@ -4,8 +4,8 @@ import React, { useContext } from 'react'
 import Logout from '../buttons/Logout'
 import { Context } from '../context/Context'
 
-const Sidebar = ({ isSidebar, setIsSidebar, isLogin, role }) => {
-    const {cartBar,setCartBar}= useContext(Context)
+const Sidebar = ({ isSidebar, setIsSidebar, }) => {
+    const {cartBar,setCartBar, userData, staffData}= useContext(Context)
     const handleGotoCart=()=>{
         setCartBar(!cartBar)
         setIsSidebar(false)
@@ -19,7 +19,7 @@ const Sidebar = ({ isSidebar, setIsSidebar, isLogin, role }) => {
             
           <button className='hover:opacity-70 cursor-pointer' onClick={handleGotoCart} >Cart</button>
             {
-                isLogin ? <div className=' w-auto flex flex-col items-center justify-center gap-2'>
+                userData ? <div className=' w-auto flex flex-col items-center justify-center gap-2'>
 
                     <Link href={'/profile'} onClick={() => setIsSidebar(false)}>Profile</Link>
                     <p onClick={() => setIsSidebar(false)}><Logout /></p>

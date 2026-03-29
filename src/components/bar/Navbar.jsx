@@ -33,7 +33,7 @@ const Navbar = () => {
             userData ? <div className='w-auto h-full flex flex-row items-center justify-center gap-2'>
               <Logout />
               <Profile />
-            </div> : <Link href={'/login'} onClick={()=>setCartBar(false)}>Login</Link>
+            </div> : <Link href={'/login'} onClick={()=>setCartBar(false)} className='px-4 bg-white text-black p-1 rounded-2xl'>Login</Link>
           }
         </div>
         

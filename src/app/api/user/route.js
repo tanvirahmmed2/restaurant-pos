@@ -2,7 +2,6 @@ import ConnectDB from "@/lib/database/mongo";
 import { NextResponse } from "next/server";
 import bcrypt from 'bcryptjs'
 import User from "@/lib/models/user";
-import { cookies } from "next/headers";
 import { isLogin } from "@/lib/auth/middleware";
 
 
@@ -107,4 +106,67 @@ export async function GET() {
 
     }
 
+}
+
+export async function PATCH(req) {
+    try {
+        await ConnectDB();
+
+        const auth = await isLogin();
+        if (!auth.success) {
+            return NextResponse.json({
+                success: false, message: auth.message
+            }, { status: 400 });
+        }
+
+        const authenticatedUser = auth.payload; 
+        const { name, email, password } = await req.json();
+
+        if (!name || !email) {
+            return NextResponse.json({
+                success: false, message: 'Please fill all info'
+            }, { status: 400 });
+        }
+
+        const currentUser = await User.findById(authenticatedUser._id);
+        if (!currentUser) {
+            return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
+        }
+
+        const isNameChanged = name !== currentUser.name;
+        const isEmailChanged = email !== currentUser.email;
+        
+        let isPasswordChanged = false;
+        if (password && password.trim() !== "") {
+            const isMatching = await bcrypt.compare(password, currentUser.password);
+            if (!isMatching) {
+                isPasswordChanged = true;
+            }
+        }
+
+        if (!isNameChanged && !isEmailChanged && !isPasswordChanged) {
+            return NextResponse.json({
+                success: false, 
+                message: 'No changes detected' 
+            }, { status: 200 }); 
+        }
+
+        const updateData = { name, email };
+        if (isPasswordChanged) {
+            const salt = await bcrypt.genSalt(10);
+            updateData.password = await bcrypt.hash(password, salt);
+        }
+
+        await User.findByIdAndUpdate(authenticatedUser._id, { $set: updateData });
+
+        return NextResponse.json({
+            success: true, 
+            message: 'Profile updated successfully'
+        }, { status: 200 });
+
+    } catch (error) {
+        return NextResponse.json({
+            success: false, message: error.message
+        }, { status: 500 });
+    }
 }

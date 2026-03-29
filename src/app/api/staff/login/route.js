@@ -86,11 +86,11 @@ export async function POST(req) {
 export async function GET() {
 
     try {
-        const auth=await isStaff()
-        if(!auth.success){
+        const auth = await isStaff()
+        if (!auth.success) {
             return NextResponse.json({
-                success:false, message:auth.message
-            },{status:400})
+                success: false, message: auth.message
+            }, { status: 400 })
         }
 
         const res = NextResponse.json({
@@ -113,4 +113,35 @@ export async function GET() {
             error: error.message
         }, { status: 500 })
     }
+}
+
+
+export async function DELETE() {
+    try {
+        const auth = await isStaff()
+        if (!auth.success) {
+            return NextResponse.json({
+                success: false, message: auth.message
+            }, { status: 400 })
+        }
+        const staff = auth.payload
+        const Admins = await Staff.find({ role: 'admin' })
+
+        if (Admins.length === 1 && staff.role === 'admin') {
+            return NextResponse.json({
+                success: false,
+                message: "This account can't be removed"
+            }, { status: 400 })
+        }
+        await Staff.findByIdAndDelete(staff._id)
+        return NextResponse.json({
+            success:true, message:'Successfully deleted account'
+        },{status:200})
+    } catch (error) {
+        return NextResponse.json({
+            success: false, message: error.message
+        }, { status: 500 })
+
+    }
+
 }

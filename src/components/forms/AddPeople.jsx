@@ -19,8 +19,8 @@ const AddPeople = () => {
     const addNewPeople = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.post('/api/user', formData, { withCredentials: true })
-            console.log(response)
+            const response = await axios.post('/api/staff', formData, { withCredentials: true })
+            
             toast.success(response.data.message)
             setFormData({
                 name: '',
@@ -28,9 +28,9 @@ const AddPeople = () => {
                 password: '',
                 role: ''
             })
+            window.location.reload()
         } catch (error) {
-            console.log(error)
-            toast.error(error?.response?.data?.error || 'Failed to add new access')
+            toast.error(error?.response?.data?.message  || 'Failed to add new access')
         }
     }
     return (
@@ -45,6 +45,7 @@ const AddPeople = () => {
                     <label htmlFor="role">Role</label>
                     <select name="role" id="role" required value={formData.role} onChange={handleChange} className='w-full p-1 px-3 outline-none border-2 border-black/10 rounded-lg shadow-sm'>
                         <option value="">Select an option</option>
+                        <option value="admin">Admin</option>
                         <option value="manager">Manager</option>
                         <option value="sales">Sales</option>
                     </select>

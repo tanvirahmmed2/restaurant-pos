@@ -22,8 +22,6 @@ const UpdateUserForm = () => {
         try {
             const res= await axios.patch('/api/user', formData, {withCredentials:true})
             toast.success(res.data.message)
-            e.target.reset()
-            window.location.replace('/login')
         } catch (error) {
             toast.error(error?.response?.data?.message || "Failed to register")
             
@@ -41,7 +39,7 @@ const UpdateUserForm = () => {
         </div>
         <div className='w-full flex flex-col gap-1'>
             <label htmlFor="password">Password</label>
-            <input type="text" name='password' onChange={handleChange} id='password' value={formData.password} required  className='w-full px-3 p-1 border border-black/40 rounded-lg outline-none'/>
+            <input type="text" name='password' onChange={handleChange} id='password' value={formData.password} className='w-full px-3 p-1 border border-black/40 rounded-lg outline-none'/>
         </div>
         <button className='w-full bg-slate-700 text-white p-1 rounded-xl'>Update</button>
       

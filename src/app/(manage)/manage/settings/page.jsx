@@ -1,12 +1,13 @@
 'use client'
-import { useCart } from '@/components/context/Context'
+import { Context } from '@/components/context/Context'
 import WebsiteDetails from '@/components/forms/WebsiteDetails'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { toast } from 'react-toastify'
 
 const Setting = () => {
-  const { siteData } = useCart()
+  const { siteData } = useContext(Context)
+  const [password, setPassword] = useState('')
 
   const [formData, setFormData] = useState({
     id: siteData?._id || null,
@@ -28,7 +29,7 @@ const Setting = () => {
   const changeTitle = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/title', {id:formData.id, title:formData.title}, {withCredentials:true})
+      const response = await axios.post('/api/website/title', { id: formData.id, title: formData.title }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
@@ -38,7 +39,7 @@ const Setting = () => {
   const changeAddress = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/address', {id:formData.id, address:formData.address}, {withCredentials:true})
+      const response = await axios.post('/api/website/address', { id: formData.id, address: formData.address }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
@@ -48,7 +49,7 @@ const Setting = () => {
   const changeTax = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/tax', {id:formData.id, tax:formData.tax}, {withCredentials:true})
+      const response = await axios.post('/api/website/tax', { id: formData.id, tax: formData.tax }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
@@ -59,7 +60,7 @@ const Setting = () => {
   const changeBio = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/bio', {id:formData.id, bio:formData.bio}, {withCredentials:true})
+      const response = await axios.post('/api/website/bio', { id: formData.id, bio: formData.bio }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
@@ -69,7 +70,7 @@ const Setting = () => {
   const changeSocialLink = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/sociallink', {id:formData.id, socialLink:formData.socialLink}, {withCredentials:true})
+      const response = await axios.post('/api/website/sociallink', { id: formData.id, socialLink: formData.socialLink }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
@@ -79,7 +80,7 @@ const Setting = () => {
   const changeOpenFrom = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/openfrom', {id:formData.id, openFrom:formData.openFrom}, {withCredentials:true})
+      const response = await axios.post('/api/website/openfrom', { id: formData.id, openFrom: formData.openFrom }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
@@ -89,7 +90,7 @@ const Setting = () => {
   const changeOpenTo = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/opento', {id:formData.id, openTo:formData.openTo}, {withCredentials:true})
+      const response = await axios.post('/api/website/opento', { id: formData.id, openTo: formData.openTo }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
@@ -100,11 +101,33 @@ const Setting = () => {
   const changeTagline = async (e) => {
     e.preventDefault()
     try {
-      const response= await axios.post('/api/website/tagline', {id:formData.id, tagline:formData.tagline}, {withCredentials:true})
+      const response = await axios.post('/api/website/tagline', { id: formData.id, tagline: formData.tagline }, { withCredentials: true })
       toast.success(response.data.message)
     } catch (error) {
       console.log(error)
       toast.error(error?.response?.data?.message || 'Failed to perform action')
+    }
+  }
+
+  const changePassword = async (e) => {
+    e.preventDefault()
+    try {
+      const res = await axios.patch('/api/staff', { password }, { withCredentials: true })
+      toast.success(res.data.message)
+      window.location.reload()
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to change password")
+    }
+
+  }
+
+  const deleteAccount = async () => {
+    try {
+      const res = await axios.delete('/api/staff/login', { withCredentials: true })
+      toast.error(res.data.message)
+      window.location.reload()
+    } catch (error) {
+      toast.error(error?.response?.data?.message || 'Failed to delete account')
     }
   }
 
@@ -113,65 +136,85 @@ const Setting = () => {
   return (
     <div className='w-full p-4 flex flex-col items-center justify-center gap-8'>
       <h1 className='text-2xl'>Update Business Information</h1>
+      <div className='w-full flex flex-col md:flex-row gap-4 bg-gray-200 px-2 py-4 rounded-2xl'>
+        <form onSubmit={changeTitle} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="title">Title</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="text" required value={formData.title} id='title' name='title' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+        <form onSubmit={changeTagline} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="tagline">Tagline</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="text" required value={formData.tagline} id='tagline' name='tagline' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+      </div>
 
-      <form onSubmit={changeTitle} className='w-full flex flex-col gap-2'>
-        <label htmlFor="title">Title</label>
-        <div className='w-full flex flex-row items-center justify-between gap-4'>
-          <input type="text" required value={formData.title} id='title' name='title' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
-          <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
-        </div>
-      </form>
 
-      <form onSubmit={changeBio} className='w-full flex flex-col gap-2'>
+
+      <form onSubmit={changeBio} className='w-full flex flex-col gap-2 bg-gray-200 px-2 py-4 rounded-2xl'>
         <label htmlFor="bio">Bio</label>
         <div className='w-full flex flex-row items-center justify-between gap-4'>
           <input type="text" required value={formData.bio} id='bio' name='bio' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
           <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
         </div>
       </form>
-      <form onSubmit={changeTagline} className='w-full flex flex-col gap-2'>
-        <label htmlFor="tagline">Tagline</label>
-        <div className='w-full flex flex-row items-center justify-between gap-4'>
-          <input type="text" required value={formData.tagline} id='tagline' name='tagline' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
-          <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
-        </div>
-      </form>
-      <form onSubmit={changeAddress} className='w-full flex flex-col gap-2'>
-        <label htmlFor="address">Address</label>
-        <div className='w-full flex flex-row items-center justify-between gap-4'>
-          <input type="text" required value={formData.address} id='address' name='address' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
-          <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
-        </div>
-      </form>
-      <form onSubmit={changeTax} className='w-full flex flex-col gap-2'>
-        <label htmlFor="tax">Tax</label>
-        <div className='w-full flex flex-row items-center justify-between gap-4'>
-          <input type="number" required value={formData.tax} id='tax' name='tax' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
-          <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
-        </div>
-      </form>
-      <form onSubmit={changeOpenFrom} className='w-full flex flex-col gap-2'>
-        <label htmlFor="openFrom">Open Time</label>
-        <div className='w-full flex flex-row items-center justify-between gap-4'>
-          <input type="text" required value={formData.openFrom} id='openFrom' name='openFrom' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
-          <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
-        </div>
-      </form>
-      <form onSubmit={changeOpenTo} className='w-full flex flex-col gap-2'>
-        <label htmlFor="openTo">Open Till</label>
-        <div className='w-full flex flex-row items-center justify-between gap-4'>
-          <input type="text" required value={formData.openTo} id='openTo' name='openTo' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
-          <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
-        </div>
-      </form>
-      <form onSubmit={changeSocialLink} className='w-full flex flex-col gap-2'>
-        <label htmlFor="socialLink">Social Link</label>
-        <div className='w-full flex flex-row items-center justify-between gap-4'>
-          <input type="text" required value={formData.socialLink} id='socialLink' name='socialLink' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
-          <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
-        </div>
-      </form>
+      <div className='w-full flex flex-col md:flex-row gap-4 bg-gray-200 px-2 py-4 rounded-2xl'>
+        <form onSubmit={changeAddress} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="address">Address</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="text" required value={formData.address} id='address' name='address' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+        <form onSubmit={changeSocialLink} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="socialLink">Social Link</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="text" required value={formData.socialLink} id='socialLink' name='socialLink' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+      </div>
 
+      <div className='w-full flex flex-col md:flex-row gap-4 bg-gray-200 px-2 py-4 rounded-2xl'>
+        <form onSubmit={changeTax} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="tax">Tax</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="number" required value={formData.tax} id='tax' name='tax' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+        <form onSubmit={changeOpenFrom} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="openFrom">Open Time</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="text" required value={formData.openFrom} id='openFrom' name='openFrom' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+        <form onSubmit={changeOpenTo} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="openTo">Open Till</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="text" required value={formData.openTo} id='openTo' name='openTo' onChange={handleChange} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+
+      </div>
+      <h1 className='text-2xl font-semibold'>Account</h1>
+
+      <div className='w-full flex flex-col gap-4 md:flex-row bg-gray-200 px-2 py-4 rounded-2xl'>
+        <form onSubmit={changePassword} className='w-full flex flex-col gap-2 bg-white p-2 rounded-lg'>
+          <label htmlFor="password">Password</label>
+          <div className='w-full flex flex-row items-center justify-between gap-4'>
+            <input type="text" required value={password} id='password' name='password' onChange={(e) => setPassword(e.target.value)} className='w-full p-1 px-3 border outline-none rounded-lg' />
+            <button type='submit' className='px-4 p-1 bg-black text-center rounded-lg hover:scale-[1.02] transform ease-in-out duration-500 cursor-pointer text-white'>Change</button>
+          </div>
+        </form>
+        <button onClick={deleteAccount} className='w-full p-1 bg-gray-400 text-white text-2xl rounded-2xl hover:shadow-xl cursor-pointer'>Delete Account!</button>
+      </div>
     </div>
   )
 }

@@ -10,7 +10,7 @@ const Footer = () => {
       <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2'>
         <div className='w-full flex flex-col gap-1'>
           <h1 className='text-3xl font-black'>{siteData?.title || "Dine"}</h1>
-          <Link className='opacity-60' href={'/'}>Visit Branch</Link>
+          <p className='opacity-60' >{siteData?.address}</p>
 
         </div>
         <div className='w-full flex flex-col gap-1'>
@@ -39,7 +39,7 @@ const Footer = () => {
 
       </div>
 
-      <p>Developed by <Link href={'https://tanvirahmmed.vercel.app/'} className='font-semibold '>Tanvir Ahmmed</Link></p>
+      <p>Developed by <Link href={'https://disibin.com/'} className='font-semibold '>Disibin</Link></p>
 
     </div>
   )

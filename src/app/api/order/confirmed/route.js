@@ -57,8 +57,7 @@ export async function POST(req) {
     } catch (error) {
         return NextResponse.json({
             success: false,
-            message:'Failed to deliver order',
-            error: error.message
+            message: error.message
         }, {status:500})
         
     }

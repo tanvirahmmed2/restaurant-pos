@@ -142,7 +142,7 @@ const UserOrderForm = () => {
                                 formData.paymentMethod !== 'cash' &&
                                 <div className='w-full flex flex-col gap-1'>
                                     <label htmlFor="transactionId">Transaction ID</label>
-                                    <input type="text" name='transactionId' id='transactionId' required onChange={handleChange} value={formData.transactionId} className='w-full px-3 p-1 outline-none border bg-white text-black rounded-lg' />
+                                    <input type="text" name='transactionId' id='transactionId' onChange={handleChange} value={formData.transactionId} className='w-full px-3 p-1 outline-none border bg-white text-black rounded-lg' />
                                 </div>
                             }
                             <button type='submit' className='w-full p-1 bg-white rounded-lg cursor-pointer text-black text-center'>Place Order</button>

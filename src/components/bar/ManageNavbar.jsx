@@ -15,7 +15,6 @@ const ManageNavbar = () => {
         </div>
         <div className='flex flex-row items-center justify-center gap-4 h-14'>
             <h1>{staffData?.name}</h1>
-            <Profile/>
         </div>
     </nav>
   )

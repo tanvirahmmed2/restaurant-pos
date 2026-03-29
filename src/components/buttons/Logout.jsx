@@ -16,7 +16,7 @@ const Logout = () => {
     }
   }
   return (
-    <button className='w-auto flex items-center justify-between gap-3 cursor-pointer ' onClick={handleLogout}>Logout</button>
+    <button className='w-auto flex items-center justify-between gap-3 cursor-pointer border p-1 px-3 rounded-2xl' onClick={handleLogout}>Logout</button>
   )
 }
 

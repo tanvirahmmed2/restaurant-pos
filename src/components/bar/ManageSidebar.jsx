@@ -138,9 +138,7 @@ const ManageSidebar = () => {
           <IoSettingsOutline /> Settings
         </Link>
 
-        <Link href="/profile" className={linkStyle('/profile')}>
-          <PiFinnTheHumanLight /> Profile
-        </Link>
+        
 
         <button
           onClick={handleLogout}

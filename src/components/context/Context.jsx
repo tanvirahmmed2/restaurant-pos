@@ -17,6 +17,7 @@ export const ContextProvider = ({ children }) => {
 
   const [manageSidebar, setManageSidebar] = useState(false)
   const [cartBar, setCartBar]= useState(false)
+  const [updateUserBox,setUpdateUserBox]= useState(false)
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -214,7 +215,7 @@ const clearCart = () => {
   
       
   const contextValue = {
-    manageSidebar, setManageSidebar, cartBar, setCartBar,
+    manageSidebar, setManageSidebar, cartBar, setCartBar,updateUserBox,setUpdateUserBox,
     cart, siteData, userData, staffData, subTotal, setSubTotal, totalPrice, setTotalPrice, totalDiscount, setTotalDiscount,
     categories,cart,
     fetchCategories, addToCart, removeFromCart, decreaseQuantity, clearCart, fetchCart

@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext,  } from 'react'
 import { Context } from '../context/Context'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -21,7 +21,7 @@ const CartBar = () => {
                             <button className='w-full border border-black/20 rounded-2xl cursor-pointer' onClick={() => setCartBar(!cartBar)}>Close</button>
 
                             <h1 className='text-2xl font-semibold'>Items</h1>
-                            <div className='w-full flex flex-col items-center justify-between gap-4 min-h-[90vh]'>
+                            <div className='w-full flex flex-col items-center justify-between gap-4 '>
                                 <div className='w-full flex flex-col items-center gap-2'>
                                     {
                                         cart?.items.length > 0 && cart?.items.map((item) => (

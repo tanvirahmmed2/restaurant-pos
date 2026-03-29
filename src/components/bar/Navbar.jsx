@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <div className='w-full fixed top-0 z-50 right-0'>
       <div className='w-full flex flex-row items-center justify-around h-16 px-4 bg-slate-800 text-white'>
-        <Link href={'/'} className='text-3xl '>{siteData?.title || 'Grand Kitchen'}</Link>
+        <Link href={'/'} onClick={()=>setCartBar(false)} className='text-3xl '>{siteData?.title || 'Grand Kitchen'}</Link>
         <div>
 
         </div>

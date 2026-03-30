@@ -1,7 +1,7 @@
 'use client'
 import React, { useMemo } from 'react'
 
-const LastYearAnalytics = ({ data }) => {
+const LastYearSales = ({ data }) => {
     const date = new Date()
     const currYear = date.getFullYear()
 
@@ -24,7 +24,7 @@ const LastYearAnalytics = ({ data }) => {
     }, [currentYearData]);
 
     return (
-        <div className='flex-1 flex-col flex items-center justify-center gap-2 p-2 border rounded-lg'>
+        <div className='w-full flex-col flex items-center justify-center gap-2 p-2 border rounded-lg'>
             <h3 className='text-xl font-semibold'>Current Year Sales</h3>
             <p><strong>Year:</strong> {currYear}</p>
             <p><strong>Total Orders:</strong> {currentYearData.length}</p>
@@ -33,4 +33,4 @@ const LastYearAnalytics = ({ data }) => {
     )
 }
 
-export default LastYearAnalytics
+export default LastYearSales

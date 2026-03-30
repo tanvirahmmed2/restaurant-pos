@@ -1,7 +1,7 @@
 'ue client'
 import React, { useMemo } from 'react'
 
-const TotalAnalytics = ({data}) => {
+const TotalSales = ({data}) => {
     const totalPrice=useMemo(()=>{
         let total=0
         data.forEach(item => {
@@ -29,4 +29,4 @@ const TotalAnalytics = ({data}) => {
   )
 }
 
-export default TotalAnalytics
+export default TotalSales

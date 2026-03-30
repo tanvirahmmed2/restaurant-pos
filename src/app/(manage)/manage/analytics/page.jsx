@@ -1,13 +1,13 @@
 'use client'
-import LastMonthAnalytics from '@/components/card/LastMonthAnalytics'
-import LastYearAnalytics from '@/components/card/LastYearAnalytics'
-import TotalAnalytics from '@/components/card/TotalAnalytics'
+import LastMonthSales from '@/components/report/LastMonthSales'
+import LastYearSales from '@/components/report/LastYearSales'
+import TotalSales from '@/components/report/TotalSales'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 
 const Analytics = () => {
   const [data, setData] = useState([])
-  const [expenses, setExpenses]=useState([])
+  const [expenses, setExpenses] = useState([])
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -27,29 +27,29 @@ const Analytics = () => {
   }, [])
 
 
-  useEffect(()=>{
-    const fetchExpenses=async()=>{
+  useEffect(() => {
+    const fetchExpenses = async () => {
       try {
-        const res= await axios.get('/api/expense',{withCredentials:true})
+        const res = await axios.get('/api/expense', { withCredentials: true })
         setExpenses(res.data.payload || [])
       } catch (error) {
         setExpenses([])
       }
     }
     fetchExpenses()
-  },[])
+  }, [])
   return (
     <div className='w-full flex flex-col items-center justify-center p-4'>
       {
         setData === null ? <p>No data found</p> : <div className='w-full flex flex-col items-center justify-center gap-4'>
           <h1 className='text-2xl font-semibold border-b-2 px-6'>Analytics</h1>
           <div className='w-full flex flex-row items-center justify-center gap-2'>
-            <LastMonthAnalytics data={data} />
-            <LastYearAnalytics data={data} />
+            <LastMonthSales data={data} />
+            <LastYearSales data={data} />
 
+            <TotalSales data={data} />
           </div>
 
-          <TotalAnalytics data={data} />
         </div>
       }
     </div>

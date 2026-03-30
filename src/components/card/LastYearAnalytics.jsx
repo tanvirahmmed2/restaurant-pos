@@ -25,7 +25,7 @@ const LastYearAnalytics = ({ data }) => {
 
     return (
         <div className='flex-1 flex-col flex items-center justify-center gap-2 p-2 border rounded-lg'>
-            <h3 className='text-xl font-semibold'>Current Year Analytics</h3>
+            <h3 className='text-xl font-semibold'>Current Year Sales</h3>
             <p><strong>Year:</strong> {currYear}</p>
             <p><strong>Total Orders:</strong> {currentYearData.length}</p>
             <p><strong>Total Revenue:</strong> BDT {totalPrice.toFixed(2)}</p>

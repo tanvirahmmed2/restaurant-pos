@@ -21,7 +21,7 @@ const TotalAnalytics = ({data}) => {
     },[data])
   return (
     <div className='w-full flex-col flex items-center justify-center gap-2 p-2 border rounded-lg'>
-        <h1 className='text-xl font-semibold'>Total Analytics</h1>
+        <h1 className='text-xl font-semibold'>Total Sales</h1>
         <p>Order Sold : {data.length}</p>
         <p>Total item sold: {totalItems}</p>
       <h1>{totalPrice}</h1>

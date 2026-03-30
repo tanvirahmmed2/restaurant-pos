@@ -7,11 +7,12 @@ import React, { useEffect, useState } from 'react'
 
 const Analytics = () => {
   const [data, setData] = useState([])
+  const [expenses, setExpenses]=useState([])
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/api/order/deliver', { withCredentials: true })
+        const response = await axios.get('/api/order/delivery', { withCredentials: true })
         setData(response.data.payload)
 
       } catch (error) {
@@ -25,6 +26,18 @@ const Analytics = () => {
     fetchOrders()
   }, [])
 
+
+  useEffect(()=>{
+    const fetchExpenses=async()=>{
+      try {
+        const res= await axios.get('/api/expense',{withCredentials:true})
+        setExpenses(res.data.payload || [])
+      } catch (error) {
+        setExpenses([])
+      }
+    }
+    fetchExpenses()
+  },[])
   return (
     <div className='w-full flex flex-col items-center justify-center p-4'>
       {

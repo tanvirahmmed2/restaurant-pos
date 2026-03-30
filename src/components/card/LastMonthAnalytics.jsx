@@ -26,7 +26,7 @@ const LastMonthAnalytics = ({ data }) => {
 
   return (
     <div className='flex-1 flex-col flex items-center justify-center gap-2 p-2 border rounded-lg'>
-      <h3 className='text-xl font-semibold'>Current Month Analytics</h3>
+      <h3 className='text-xl font-semibold'>Current Month Sales</h3>
       <p><strong>Month:</strong> {currMonth + 1} / {currYear}</p>
       <p><strong>Total Orders:</strong> {currentMonthData.length}</p>
       <p><strong>Total Revenue:</strong> BDT {totalPrice.toFixed(2)}</p>

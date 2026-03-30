@@ -5,6 +5,7 @@ import axios from 'axios'
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Context } from '../context/Context'
+import { BiCartDownload } from 'react-icons/bi'
 
 const FlashSale = () => {
   const { addToCart } = useContext(Context)
@@ -46,7 +47,7 @@ const FlashSale = () => {
                       <p className='font-semibold'>৳{item.price - item.discount}</p>
                     </div> : <p className='font-semibold'>৳{item.price}</p>
                   }
-                  <button onClick={() => addToCart(item)} className='bg-black text-white p-1 px-5 w-auto rounded-2xl opacity-30 cursor-pointer'>Add To cart</button>
+                  <button onClick={() => addToCart(item)} className='bg-slate-700 hover:bg-slate-500 shadow shadow-black text-white p-1 px-5 w-full flex items-center justify-center rounded-2xl cursor-pointer'><BiCartDownload/></button>
                 </motion.div>
               </div>
             ))

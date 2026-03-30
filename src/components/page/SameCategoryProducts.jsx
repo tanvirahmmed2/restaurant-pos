@@ -27,9 +27,7 @@ const SameCategoryProducts = ({ id }) => {
                     <div className='w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3'>
                         {
                             products.map((item) => (
-                                <Link key={item._id} href={`/menu/${item.slug}`} className="w-full">
-                                    <Item item={item} />
-                                </Link>
+                                <Item item={item} key={item._id}/>
                             ))
                         }
                     </div>

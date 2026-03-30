@@ -5,6 +5,7 @@ import { Context } from "@/components/context/Context"
 import axios from "axios"
 import Link from "next/link"
 import { useEffect, useState, useMemo, useContext } from "react"
+import SaleItem from "../card/SaleItem"
 
 
 
@@ -48,13 +49,11 @@ const MenuPage = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-8 w-full">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-8 w-full">
           {products.length > 0 ? (
             products.map((item) => (
 
-              <div key={item._id} className="w-full cursor-pointer" onClick={()=>addToCart(item)}>
-                <Item item={item}/>
-              </div>
+              <SaleItem key={item._id} item={item}/>
             ))
           ) : (
             <p className="col-span-full text-center text-gray-400">No items found in this category.</p>

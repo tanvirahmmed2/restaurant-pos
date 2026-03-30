@@ -10,8 +10,8 @@ import { useEffect, useState, useMemo, useContext } from "react"
 
 const Menu = () => {
   const [products, setProducts] = useState([])
-  const{categories}= useContext(Context)
-  const [categoryId, setCategoryId]= useState('')
+  const { categories } = useContext(Context)
+  const [categoryId, setCategoryId] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,7 +34,7 @@ const Menu = () => {
         <button onClick={() => setCategoryId('')} className="text-2xl cursor-pointer font-semibold w-full text-center">Menu</button>
 
         <div className="w-full grid grid-cols-3 md:grid-cols-6 justify-items-center gap-2">
-          
+
           {categories.map((cat) => (
             <button
               key={cat._id}
@@ -51,10 +51,7 @@ const Menu = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-4 mt-8 w-full">
           {products.length > 0 ? (
             products.map((item) => (
-
-              <Link key={item._id} href={`/menu/${item.slug}`} className="w-full h-full">
-                <Item item={item}/>
-              </Link>
+              <Item item={item} key={item._id} />
             ))
           ) : (
             <p className="col-span-full text-center text-gray-400">No items found in this category.</p>

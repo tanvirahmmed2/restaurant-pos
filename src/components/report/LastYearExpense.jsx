@@ -1,7 +1,7 @@
 'use client'
 import React, { useMemo } from 'react'
 
-const LastYearSales = ({ data }) => {
+const LastYearExpense = ({ data }) => {
     const date = new Date()
     const currYear = date.getFullYear()
 
@@ -13,11 +13,11 @@ const LastYearSales = ({ data }) => {
         });
     }, [data, currYear]);
 
-    const totalPrice = useMemo(() => {
+    const totalAmount  = useMemo(() => {
         let total = 0;
 
         currentYearData.forEach(item => {
-            total += Number(item.totalPrice) || 0;
+            total += Number(item.amount) || 0;
         });
 
         return total;
@@ -25,12 +25,12 @@ const LastYearSales = ({ data }) => {
 
     return (
         <div className='w-full flex-col flex items-center justify-center gap-2 p-2 border rounded-lg bg-slate-200'>
-            <h3 className='text-xl font-semibold'>Current Year Sales</h3>
+            <h3 className='text-xl font-semibold'>Current Year Expense</h3>
             <p><strong>Year:</strong> {currYear}</p>
-            <p><strong>Total Orders:</strong> {currentYearData.length}</p>
-            <p><strong>Total Revenue:</strong> BDT {totalPrice.toFixed(2)}</p>
+            <p><strong>Total Expenses:</strong> {currentYearData.length}</p>
+            <p><strong>Total Expenses Value:</strong> BDT {totalAmount .toFixed(2)}</p>
         </div>
     )
 }
 
-export default LastYearSales
+export default LastYearExpense

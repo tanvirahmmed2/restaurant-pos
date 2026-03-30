@@ -25,7 +25,7 @@ const LastMonthSales = ({ data }) => {
   }, [currentMonthData]);
 
   return (
-    <div className='w-full flex-col flex items-center justify-center gap-2 p-2 border rounded-lg'>
+    <div className='w-full flex-col flex items-center justify-center gap-2 p-2 border rounded-lg bg-slate-200'>
       <h3 className='text-xl font-semibold'>Current Month Sales</h3>
       <p><strong>Month:</strong> {currMonth + 1} / {currYear}</p>
       <p><strong>Total Orders:</strong> {currentMonthData.length}</p>

@@ -35,15 +35,27 @@ const Expenses = () => {
   return (
     <div className='w-full flex flex-col items-center gap-4'>
       <h1 className='text-center text-2xl font-semibold'>All Expenses Record</h1>
-      <div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+      <div className='w-full flex flex-col gap-1'>
+        <div className='w-full grid grid-cols-8'>
+            <p className='col-span-1'>ID</p>
+            <p className='col-span-1'>Date</p>
+            <p className='col-span-1'>Billed By</p>
+            <p className='col-span-1'>Title</p>
+            <p className='col-span-2'>Note</p>
+            <p className='col-span-1'>Amount</p>
+            <p className='col-span-1'>Action</p>
+        </div>
         {
             expenses.map((e)=>(
-                <div key={e._id} className='w-full flex flex-col gap-4 shadow border border-black/20 rounded-xl p-2'>
-                    <p className='font-semibold text-xl'>{e.title}</p>
-                    <p className='text-2xl font-black border-b border-red-600'>{e.amount}</p>
-                    <p>{e.note}</p>
-                    <p className='text-xs italic'>Recored by: {e.madeBy}</p>
-                    <button onClick={()=>handleDelete(e._id)} className='bg-slate-700 text-white rounded-xl p-1 text-center flex items-center w-full cursor-pointer text-xl justify-center'><MdDeleteOutline/></button>
+                <div key={e._id} className='w-full grid grid-cols-8 even:bg-slate-300 p-1'>
+                    <p className='col-span-1 uppercase'>#{e._id.slice(-5)}</p>
+                    <p className='col-span-1'>{e.createdAt.slice(0, 10)}</p>
+                    <p className='col-span-1'>{e.madeBy}</p>
+                    <p className='font-semibold text-xl col-span-1'>{e.title}</p>
+                    <p className='col-span-2'>{e.note}</p>
+                    <p className=' col-span-1'>{e.amount}</p>
+                    <button onClick={()=>handleDelete(e._id)} className='bg-slate-700 col-span-1 text-white rounded-xl p-1 text-center flex items-center w-full cursor-pointer text-xl justify-center'><MdDeleteOutline/></button>
+                    
                 </div>
             ))
         }

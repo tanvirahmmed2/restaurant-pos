@@ -25,9 +25,7 @@ const FlashSale =  () => {
         (products && products.length!==0)? <div className='w-full grid grid-cols-2 h-full sm:grid-cols-3 md:grid-cols-4 gap-4'>
           {
             products.map((item) => (
-              <Link href={`/menu/${item.slug}`} key={item._id} className='w-full'>
-                <Item item={item} />
-              </Link>
+              <Item item={item} key={item._id}/>
             ))
           }
         </div>: <p>No offer available</p>

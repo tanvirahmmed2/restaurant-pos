@@ -27,7 +27,7 @@ const FlashSale = () => {
     <div className='w-full flex flex-col items-center justify-center p-4 gap-4 '>
       <h1 className='text-3xl text-center '>Flash Sale!</h1>
       {
-        products && <div className='w-full flex flex-col items-center justify-center gap-7'>
+        products && <div className='w-full flex flex-col items-center justify-center gap-20'>
           {
             products.map((item) => (
               <div key={item._id} className='w-full max-w-4xl gap-4 md:gap6 flex flex-row items-center even:flex-row-reverse'>

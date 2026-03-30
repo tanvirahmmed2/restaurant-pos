@@ -20,11 +20,11 @@ const TotalSales = ({data}) => {
         return items
     },[data])
   return (
-    <div className='w-full flex-col flex items-center justify-center gap-2 p-2 border rounded-lg'>
+    <div className='w-full flex-col flex items-center justify-center gap-2 p-2 border rounded-lg bg-slate-200'>
         <h1 className='text-xl font-semibold'>Total Sales</h1>
         <p>Order Sold : {data.length}</p>
         <p>Total item sold: {totalItems}</p>
-      <h1>{totalPrice}</h1>
+      <h1>Total Sales Value: {totalPrice}</h1>
     </div>
   )
 }

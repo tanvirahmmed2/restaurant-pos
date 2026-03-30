@@ -1,6 +1,9 @@
 'use client'
+import LastMonthExpense from '@/components/report/LastMonthExpense'
 import LastMonthSales from '@/components/report/LastMonthSales'
+import LastYearExpense from '@/components/report/LastYearExpense'
 import LastYearSales from '@/components/report/LastYearSales'
+import TotalExpense from '@/components/report/TotalExpense'
 import TotalSales from '@/components/report/TotalSales'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -49,7 +52,11 @@ const Analytics = () => {
 
             <TotalSales data={data} />
           </div>
-
+          <div className='w-full flex flex-row items-center justify-center gap-2'>
+            <LastMonthExpense data={expenses}/>
+            <LastYearExpense data={expenses}/>
+            <TotalExpense data={expenses}/>
+          </div>
         </div>
       }
     </div>

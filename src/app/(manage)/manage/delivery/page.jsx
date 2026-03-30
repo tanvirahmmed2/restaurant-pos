@@ -74,6 +74,9 @@ const DeliveryOrder = () => {
                         </p>
                       ))
                     }
+
+
+                    
                   </div>
                   <p className='col-span-1'>{order.totalPrice}</p>
                   <p className='col-span-1'>{order.totalDiscount}</p>

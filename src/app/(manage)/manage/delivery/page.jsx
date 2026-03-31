@@ -84,7 +84,7 @@ const DeliveryOrder = () => {
                   <p className='col-span-1'>{order.status}</p>
                   <div className='w-full flex flex-col items-center justify-between gap-2 col-span-1'>
                     <button className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer' onClick={() => handleCancel(order._id)}>Cancel</button>
-                    <Link href={`/manage/order/${order._id}`} className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer'>Preview</Link>
+                    <Link href={`/manage/orders/${order._id}`} className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer'>Preview</Link>
                     <button className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer' onClick={() => generateReceipt(order)}>Print</button>
                     <button className='w-full text-center shadow border border-black/20 rounded-xl cursor-pointer' onClick={() => handleDeliver(order._id)}>Deliver</button>
                   </div>

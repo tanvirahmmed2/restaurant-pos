@@ -22,7 +22,6 @@ const Intro = () => {
     fetchProducts()
   }, [])
 
-  // useMemo prevents the "flicker" of choosing a new random product on every re-render
   const product = useMemo(() => {
     if (!products || products.length === 0) return null
     return products[Math.floor(Math.random() * products.length)]
